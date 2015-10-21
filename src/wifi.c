@@ -1,6 +1,6 @@
 #include "mruby.h"
 #include <stddef.h>
-#include <string.h>
+
 
 #include "mruby/array.h"
 #include "mruby/class.h"
@@ -8,6 +8,11 @@
 #include "mruby/hash.h"
 #include "mruby/string.h"
 #include "mruby/variable.h"
+//#include "Utils/KeyBoardMan.h"
+
+#include "gedi.h"
+
+GEDI_KBD_e_Key eKey_w;
 
 #if MRUBY_RELEASE_NO < 10000
   #include "error.h"
@@ -15,14 +20,16 @@
   #include "mruby/error.h"
 #endif
 
+GEDI_WIFI_st_Info *pstNet;
+GEDI_WIFI_st_Info *wifi_conf;
+
+
+
 static mrb_value
 mrb_wifi_start(mrb_state *mrb, mrb_value klass)
 {
   mrb_int ret=0;
-
-  /*TODO Implement*/
-  /*ret = OsWifiOpen();*/
-
+  /* dummy function */
   return mrb_fixnum_value(ret);
 }
 
@@ -32,8 +39,22 @@ mrb_wifi_power(mrb_state *mrb, mrb_value klass)
 {
   mrb_int state, ret;
   mrb_get_args(mrb, "i", &state);
-  /*TODO Implement*/
-  /*ret = OsWifiSwitchPower(state)*/
+
+  if(state)
+  {
+	  do
+	  {
+		  ret = GEDI_WIFI_Enable ();
+		  GEDI_CLOCK_Delay(500);
+	  }while(ret!=0);
+
+	  //GEDI_LCD_DrawString(0,0,20,20,"Wifi Habilitado");
+  }
+  else
+  {
+	  ret = GEDI_WIFI_Disable ();
+	  //GEDI_LCD_DrawString(0,0,20,20,"Wifi Desabilitado");
+  }
 
   return mrb_fixnum_value(ret);
 }
@@ -43,61 +64,167 @@ mrb_wifi_connect(mrb_state *mrb, mrb_value klass)
 {
   mrb_value password, essid, bssid, channel, mode, authentication, cipher;
   const char *sPassword, *sEssid, *sBssid, *sChannel, *sCipher, *sMode, *sAuthentication;
-  int timeout=60000;
-  mrb_int ret = 0;
 
-  essid = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@essid"));
-  sEssid = mrb_str_to_cstr(mrb, essid);
-  /*TODO Implement*/
+//  int timeout=60000;
+//  mrb_int ret = 0;
+//
+//  GEDI_WIFI_e_Status * wifStatus;
+//  GEDI_WIFI_st_Info *psInfo;
+//  GEDI_WIFI_e_Status *WifiStatus;
+//  char pass[36]="";
+//  char Conectado = 0;
+//  int Line = 16;
+//  char BUF[256];
+//  int pos = 0;
+//
+//  UINT uiSize;
+//
+//  GEDI_WIFI_Status (&WifiStatus);
+//
+//
+//  switch((intptr_t)WifiStatus)
+//  {
+//
+//  case GEDI_WIFI_STATUS_AP_CONNECTED:
+//	  ret = 0;
+//	  return mrb_fixnum_value(ret);
+//
+//  default:
+//      break;
+//
+//  }
+//
+//  /* TODO: Ler configuração do arquivo de config */
+//  GEDI_LCD_Clear();
+//  GEDI_LCD_DrawString(0,Line*0,12,16,"Lista de Redes:");
+//  GEDI_WIFI_Scan ();
+//
+//  do{
+//	  GEDI_WIFI_Status(&wifStatus);
+//	  GEDI_CLOCK_Delay(500);
+//  }while(wifStatus==8);
+//
+//  GEDI_WIFI_APListGet ((GEDI_WIFI_st_Info **)&psInfo, &uiSize);
+//
+//  pstNet = (GEDI_WIFI_st_Info *)psInfo;
+//  wifi_conf = pstNet;
+//  char Essid[10][36];
+//
+//  UINT s = 0,l=0;
+//
+//  for(s=0;s<uiSize; s++) {
+//
+//	  sprintf(BUF,"%d. %s",s,pstNet->ESSID);
+//	  GEDI_LCD_DrawString(0,Line*(1+s),12,16,BUF);
+//	  pstNet++;
+//  }
+//
+//  GEDI_LCD_DrawString(0,Line*(1+s),12,16,"Escolha a rede:");
+//  pos = KeyBoard_Get_Number();
+//  sprintf(BUF,"Escolha a rede:%d", pos);
+//  GEDI_LCD_DrawString(0,Line*(1+s++),12,16,BUF);
+//
+//
+//  for(l=0;l<pos;l++)
+//  {
+//	  wifi_conf++;
+//  }
+//
+//  GEDI_LCD_Clear();
+//  sprintf(BUF,"Conectando a -> %s",wifi_conf->ESSID);
+//  GEDI_LCD_DrawString(0,Line*0,12,16,BUF);
+//  GEDI_CLOCK_Delay(3000);
+//
+//  char myEssid[36] = "teste";
+//  char myPass[32+1] = "1234567890";
+//
+//  mrb_cv_set(mrb, klass, mrb_intern_lit(mrb, "@essid"), mrb_str_new_cstr(mrb, myEssid));
+//  essid = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@essid"));
+//  sEssid = mrb_str_to_cstr(mrb, essid);
+//
+//  //sprintf(wifi_conf.ESSID,"%s",myEssid);
+//
+//  mrb_cv_set(mrb, klass, mrb_intern_lit(mrb, "@password"), mrb_str_new_cstr(mrb, myPass));
+//  password = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@password"));
+//  sPassword = mrb_str_to_cstr(mrb, password);
+//
+//  int pointer = 0;
+//
+//
+////  while(!KeyBoard_Get_Numbers(pass)){
+////
+////	  sprintf(BUF,"Senha:%s",(const char *)pass);
+////	  GEDI_LCD_DrawString(0,Line*1,12,16,BUF);
+////
+////  }
+//
+//
+///*
+//  bssid = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@bssid"));
+//  sBssid = mrb_str_to_cstr(mrb, bssid);
+//  TODO Implement
+//
+//  channel = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@channel"));
+//  sChannel = mrb_str_to_cstr(mrb, channel);
+//  TODO Implement
+//
+//  mode = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@mode"));
+//  sMode = mrb_str_to_cstr(mrb, mode);
+//  TODO Implement
+//
+//  authentication = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@authentication"));
+//  sAuthentication = mrb_str_to_cstr(mrb, authentication);
+//  TODO Implement
+//
+//  password = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@password"));
+//  sPassword = mrb_str_to_cstr(mrb, password);
+//  TODO Implement
+//
+//  cipher = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@cipher"));
+//  sCipher = mrb_str_to_cstr(mrb, cipher);
+//  TODO Implement*/
+//
+//  pass[sizeof(pass)]="\0";
+//
+//  GEDI_WIFI_APConnect (wifi_conf, pass);
+//
+//  //GEDI_LCD_DrawString(0,80,20,20,ret);
+//
+//  while(wifStatus!=2 && eKey_w!=GEDI_KBD_KEY_CANCEL)
+//  {
+//	  GEDI_KBD_Get(&eKey_w, FALSE, FALSE);
+//	  GEDI_CLOCK_Delay(100);
+//	  GEDI_WIFI_Status (&wifStatus);
+//	  sprintf(BUF,"Status:%03d",wifStatus);
+//	  GEDI_LCD_DrawString(0,Line*2,12,16,BUF);
+//	  GEDI_CLOCK_Delay(500);
+//  }
+//
+//  GEDI_LCD_DrawString(0,Line*3,12,16,"CONECTADO...");
+//  GEDI_CLOCK_Delay(3000);
+//  CHAR szValue[256];
+//  GEDI_WIFI_ConfigGet (3, &szValue, sizeof(szValue));
+//  sprintf(BUF,"Endereço IP:%s",szValue);
+//  GEDI_LCD_DrawString(0,Line*4,12,16,BUF);
+//  GEDI_CLOCK_Delay(3000);
 
-  bssid = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@bssid"));
-  sBssid = mrb_str_to_cstr(mrb, bssid);
-  /*TODO Implement*/
-
-  channel = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@channel"));
-  sChannel = mrb_str_to_cstr(mrb, channel);
-  /*TODO Implement*/
-
-  mode = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@mode"));
-  sMode = mrb_str_to_cstr(mrb, mode);
-  /*TODO Implement*/
-
-  authentication = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@authentication"));
-  sAuthentication = mrb_str_to_cstr(mrb, authentication);
-  /*TODO Implement*/
-
-  password = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@password"));
-  sPassword = mrb_str_to_cstr(mrb, password);
-  /*TODO Implement*/
-
-  cipher = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@cipher"));
-  sCipher = mrb_str_to_cstr(mrb, cipher);
-  /*TODO Implement*/
-
-  /*ret = OsWifiConnect(&wifiSet, timeout);*/
-  /*TODO Implement*/
-  return mrb_fixnum_value(ret);
+  return mrb_fixnum_value(0);
 }
 
-/*0   -> Sucess*/
+/*0   -> Sucess */
 /*1   -> In Progress*/
 /*< 0 -> Fail*/
 static mrb_value
 mrb_wifi_connected_m(mrb_state *mrb, mrb_value klass)
 {
-  char sEssid[32+1] = "                                \0";
-  char sBssid[19+1] = "                   \0";
-  mrb_int iRssi, ret;
+  mrb_int ret = 0;
+  GEDI_WIFI_e_Status eStatus;
 
-  /*TODO Implement*/
-  /*ret = OsWifiCheck(&sEssid, &sBssid, &iRssi);*/
+  GEDI_WIFI_Status(&eStatus);
 
-  /*TODO Implement*/
-  /*if (ret == RET_OK) {*/
-    /*mrb_cv_set(mrb, klass, mrb_intern_lit(mrb, "@essid"), mrb_str_new_cstr(mrb, sEssid));*/
-    /*mrb_cv_set(mrb, klass, mrb_intern_lit(mrb, "@bssid"), mrb_str_new_cstr(mrb, sBssid));*/
-    /*mrb_cv_set(mrb, klass, mrb_intern_lit(mrb, "@rssi"), mrb_fixnum_value(iRssi));*/
-  /*}*/
+  if(eStatus & GEDI_WIFI_STATUS_AP_CONNECTING) ret = 1;
+  else if(eStatus & GEDI_WIFI_STATUS_AP_CONNECTED) ret = 0;
+  else ret = -1;
 
   return mrb_fixnum_value(ret);
 }
@@ -105,10 +232,16 @@ mrb_wifi_connected_m(mrb_state *mrb, mrb_value klass)
 static mrb_value
 mrb_wifi_disconnect(mrb_state *mrb, mrb_value klass)
 {
-  mrb_int ret=0;
+  mrb_int ret = 0;
+  GEDI_WIFI_e_Status eStatus;
 
-  /*TODO Implement*/
-  /*ret = OsWifiDisconnect();*/
+  GEDI_WIFI_APDisconnect();
+
+  do
+  {
+	  GEDI_CLOCK_Delay(500);
+	  GEDI_WIFI_Status(&eStatus);
+  } while (!(eStatus & GEDI_WIFI_STATUS_AP_CONNECTED));
 
   return mrb_fixnum_value(ret);
 }

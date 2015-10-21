@@ -1,11 +1,14 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "mruby.h"
 #include "mruby/compile.h"
 #include "mruby/value.h"
 #include "mruby/array.h"
 #include "mruby/string.h"
 #include "mruby/hash.h"
+
+#include "gedi.h"
 
 mrb_value
 mrb_magnetic_s_open(mrb_state *mrb, mrb_value self)
@@ -22,7 +25,20 @@ mrb_magnetic_s_read(mrb_state *mrb, mrb_value self)
 {
   mrb_int ret;
 
-  /*TODO Implement*/
+  BYTE abTk1[256], abTk2[256], abTk3[256];
+  UINT uiLen1 = 0,uiLen2 = 0,uiLen3 = 0 ;
+  GEDI_e_Ret eRet;
+
+  uiLen1 = sizeof(abTk1);
+  uiLen2 = sizeof(abTk2);
+  uiLen3 = sizeof(abTk3);
+
+  eRet = GEDI_MSR_Read(abTk1, &uiLen1, abTk2, &uiLen2, abTk3, &uiLen3);
+
+
+  GEDI_LCD_DrawString(0,0,10,10,"T1:%x Len:%04d",abTk1,uiLen1);
+  GEDI_LCD_DrawString(0,20,10,10,"T2:%x Len:%04d",abTk2,uiLen2);
+  GEDI_LCD_DrawString(0,40,10,10,"T3:%x Len:%04d",abTk3,uiLen3);
 
   return mrb_fixnum_value(ret);
 }

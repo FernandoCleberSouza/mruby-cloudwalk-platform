@@ -22,6 +22,7 @@ void mrb_print_init(mrb_state *mrb);
 void
 mrb_mruby_cloudwalk_platform_gem_init(mrb_state* mrb)
 {
+
   mrb_system_init(mrb); DONE;
   mrb_display_init(mrb); DONE;
   mrb_magnetic_init(mrb); DONE;
