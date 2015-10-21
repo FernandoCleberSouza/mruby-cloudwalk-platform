@@ -7,17 +7,19 @@
 #include "mruby/array.h"
 #include "mruby/string.h"
 #include "mruby/hash.h"
+#include <gedi.h>
 
 static mrb_value
 mrb_platform_io_s__getc(mrb_state *mrb, mrb_value self)
 {
-  mrb_int timeout=0, key;
+  mrb_int timeout=0;
+  GEDI_KBD_e_Key eKey;
 
   mrb_get_args(mrb, "i", &timeout);
 
-  /*key = GetKey(timeout);*/
+  GEDI_KBD_Get(&eKey, timeout, FALSE);
 
-  return mrb_fixnum_value(key);
+  return mrb_fixnum_value(eKey);
 }
 
 /*

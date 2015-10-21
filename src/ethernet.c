@@ -8,6 +8,7 @@
 #include "mruby/hash.h"
 #include "mruby/string.h"
 #include "mruby/variable.h"
+#include "gedi.h"
 
 #if MRUBY_RELEASE_NO < 10000
   #include "error.h"
@@ -20,9 +21,18 @@
 static mrb_value
 mrb_ethernet_start(mrb_state *mrb, mrb_value klass)
 {
-  mrb_int ret=RET_OK;
+  mrb_int ret;
 
-  /*TODO Implement*/
+  GEDI_LCD_DrawString(0,0,12,16,"Habilidatando porta:");
+
+  if(!GEDI_ETH_Enable())
+  {
+	  GEDI_LCD_DrawString(0,16,12,16,"Porta Ethernet habilitada.");
+
+  }else{
+	  GEDI_LCD_DrawString(0,0,12,16,"Problema habilitando a port Ethe.");
+  }
+
 
   return mrb_fixnum_value(ret);
 }
@@ -31,11 +41,24 @@ static mrb_value
 mrb_ethernet_power(mrb_state *mrb, mrb_value klass)
 {
   mrb_int state;
+  GEDI_e_Ret enable_res;
   mrb_get_args(mrb, "i", &state);
 
-  /*TODO Implement*/
+  if(state)
+  {
+	  enable_res = GEDI_ETH_Enable();
 
-  return mrb_fixnum_value(RET_OK);
+  }else{
+	  enable_res = GEDI_ETH_Disable();
+  }
+
+#ifdef Debug
+	  char res[256];
+	  sprintf(res,"Eth. Enable: %d",enable_res);
+	  GEDI_LCD_DrawString(0,0,12,16,res);
+#endif
+
+  return mrb_fixnum_value(enable_res);
 }
 
 static mrb_value
@@ -55,8 +78,15 @@ mrb_ethernet_connected_m(mrb_state *mrb, mrb_value klass)
 static mrb_value
 mrb_ethernet_disconnect(mrb_state *mrb, mrb_value klass)
 {
-  /*TODO Implement*/
-  return mrb_fixnum_value(RET_OK);
+
+  GEDI_e_Ret ret = GEDI_ETH_Disable();
+#ifdef Debug
+  char resp[256];
+  sprintf(resp,"Disconnect Ethe:%d",ret);
+  GEDI_LCD_DrawString(0,0,12,16,resp);
+#endif
+
+  return mrb_fixnum_value(ret);
 }
 
 void

@@ -6,6 +6,10 @@
 #include "mruby/array.h"
 #include "mruby/string.h"
 #include "mruby/hash.h"
+#include "gedi.h"
+
+#define FontH 20
+#define FontW 20
 
 static mrb_value
 mrb_platform_print_s__open(mrb_state *mrb, mrb_value self)
@@ -37,9 +41,11 @@ mrb_platform_print_s__font(mrb_state *mrb, mrb_value self)
   mrb_value filename;
   mrb_int ret;
 
-  mrb_get_args(mrb, "s", &filename);
+  mrb_get_args(mrb, "z", &filename);
 
   /*ret = OsPrnSetFont(RSTRING_PTR(filename))*/
+
+  ret = GEDI_PRNTR_FontSet((const CHAR *)filename.value.p);
 
   return mrb_fixnum_value(ret);
 }
@@ -73,6 +79,8 @@ mrb_platform_print_s__feed(mrb_state *mrb, mrb_value self)
 
   mrb_get_args(mrb, "i", &size);
   /*OsPrnFeed(size);*/
+  GEDI_PRNTR_Init(size*8);
+  GEDI_PRNTR_Output();
 
   return mrb_nil_value();
 }
@@ -82,9 +90,12 @@ mrb_platform_print_s__print(mrb_state *mrb, mrb_value self)
 {
   mrb_value buf;
 
-  mrb_get_args(mrb, "S", &buf);
+  mrb_get_args(mrb, "z", &buf);
   /*OsPrnPrintf(RSTRING_PTR(buf));*/
 
+  GEDI_PRNTR_Init(160);
+  GEDI_PRNTR_DrawString(0, 0, FontH, FontW, (const CHAR *)buf.value.p);
+  GEDI_PRNTR_Output();
   return mrb_nil_value();
 }
 
@@ -93,9 +104,17 @@ mrb_platform_print_s__print_bmp(mrb_state *mrb, mrb_value self)
 {
   mrb_value path;
 
-  mrb_get_args(mrb, "s", &path);
+  mrb_get_args(mrb, "z", &path);
 
   /*OsPrnPutImage(RSTRING_PTR(path));*/
+
+  GEDI_e_Ret eRet;
+  GEDI_PRNTR_Init(400);
+  eRet = GEDI_PRNTR_DrawPictureFromFile(0, 0, (const CHAR *)path.value.p, 200);
+  printf("%d\n", eRet);
+  GEDI_PRNTR_Output();
+  GEDI_CLOCK_Delay(1000);
+
 
   return mrb_nil_value();
 }
@@ -106,6 +125,30 @@ mrb_platform_print_s__check(mrb_state *mrb, mrb_value self)
   mrb_int ret;
 
   /*ret = OsPrnCheck();*/
+
+  GEDI_PRNTR_Status(&ret);
+
+  GEDI_LCD_DrawString(0,20,20, 20, "Resultado:");
+
+  switch(ret){
+
+  case 0:
+	  GEDI_LCD_DrawString(0,40,20, 20, "0- STATUS OK");
+
+	  break;
+
+  case 1:
+	  GEDI_LCD_DrawString(0,40,20, 20, "1- OVERHEAT");
+
+	  break;
+
+  case 2:
+	  GEDI_LCD_DrawString(0,40,20, 20, "2- OUT OF PAPER");
+
+	  break;
+  default:
+	  break;
+  }
 
   return mrb_fixnum_value(ret);
 }
