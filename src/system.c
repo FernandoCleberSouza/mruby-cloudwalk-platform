@@ -87,6 +87,27 @@ mrb_system_s_reboot(mrb_state *mrb, mrb_value self)
   return mrb_fixnum_value(ret);
 }
 
+static mrb_value
+mrb_system_s_hwclock(mrb_state *mrb, mrb_value self)
+{
+  /*ST_TIME t;*/
+  mrb_int year, month, day, hour, minute, second;
+
+  mrb_get_args(mrb, "iiiiii", &year, &month, &day, &hour, &minute, &second);
+
+  /*
+   *t.Year   = year;
+   *t.Month  = month;
+   *t.Day    = day;
+   *t.Hour   = hour;
+   *t.Minute = minute;
+   *t.Second = second;
+   */
+
+  /*mrb_fixnum_value(OsSetTime(&t));*/
+  mrb_fixnum_value(0);
+}
+
 void
 mrb_system_init(mrb_state* mrb)
 {
@@ -95,13 +116,14 @@ mrb_system_init(mrb_state* mrb)
   struct RClass *system;
 
   platform = mrb_define_class(mrb, "Platform", mrb->object_class);
-  audio = mrb_define_class_under(mrb, platform, "Audio", mrb->object_class);
-  system = mrb_define_class_under(mrb, platform, "System", mrb->object_class);
+  audio    = mrb_define_class_under(mrb, platform, "Audio", mrb->object_class);
+  system   = mrb_define_class_under(mrb, platform, "System", mrb->object_class);
 
   mrb_define_class_method(mrb , system , "serial"     , mrb_system_s__serial        , MRB_ARGS_NONE());
   mrb_define_class_method(mrb , system , "backlight=" , mrb_system_s__set_backlight , MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb , system , "battery"    , mrb_system_s__battery       , MRB_ARGS_NONE());
   mrb_define_class_method(mrb , audio  , "beep"       , mrb_audio_s__beep           , MRB_ARGS_REQ(2));
   mrb_define_class_method(mrb , system , "reboot"     , mrb_system_s_reboot         , MRB_ARGS_NONE());
+  mrb_define_class_method(mrb , system , "hwclock"    , mrb_system_s_hwclock        , MRB_ARGS_REQ(6));
 }
 
