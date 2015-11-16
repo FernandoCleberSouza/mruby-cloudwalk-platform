@@ -10,6 +10,8 @@
 #include "mruby/string.h"
 #include "mruby/variable.h"
 
+#include <gedi.h>
+
 #if MRUBY_RELEASE_NO < 10000
   #include "error.h"
 #else
