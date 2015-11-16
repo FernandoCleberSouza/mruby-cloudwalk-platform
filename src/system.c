@@ -16,11 +16,10 @@
 static mrb_value
 mrb_system_s__serial(mrb_state *mrb, mrb_value self)
 {
-  char serial[128];
+  char serial[20];
 
-  memset(&serial, 0, sizeof(serial));
-
-  /*TODO Implement*/
+  memset(serial, 0, sizeof(serial));
+  GEDI_INFO_ControlNumberGet(GEDI_INFO_CONTROL_NUMBER_SN, serial);
 
   return mrb_str_new_cstr(mrb, serial);
 }
@@ -92,19 +91,19 @@ mrb_system_s_hwclock(mrb_state *mrb, mrb_value self)
 {
   /*ST_TIME t;*/
   mrb_int year, month, day, hour, minute, second;
+  GEDI_CLOCK_st_RTC stRTC;
 
   mrb_get_args(mrb, "iiiiii", &year, &month, &day, &hour, &minute, &second);
 
-  /*
-   *t.Year   = year;
-   *t.Month  = month;
-   *t.Day    = day;
-   *t.Hour   = hour;
-   *t.Minute = minute;
-   *t.Second = second;
-   */
-
-  /*mrb_fixnum_value(OsSetTime(&t));*/
+  stRTC.bYear   = year;
+  stRTC.bMonth  = month;
+  stRTC.bDay    = day;
+  stRTC.bHour   = hour;
+  stRTC.bMinute = minute;
+  stRTC.bSecond = second;
+  
+  GEDI_EnterEng("E");
+  GEDI_CLOCK_RTCSet(&stRTC);
   mrb_fixnum_value(0);
 }
 
