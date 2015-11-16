@@ -35,11 +35,6 @@ mrb_magnetic_s_read(mrb_state *mrb, mrb_value self)
 
   eRet = GEDI_MSR_Read(abTk1, &uiLen1, abTk2, &uiLen2, abTk3, &uiLen3);
 
-
-  GEDI_LCD_DrawString(0,0,10,10,"T1:%x Len:%04d",abTk1,uiLen1);
-  GEDI_LCD_DrawString(0,20,10,10,"T2:%x Len:%04d",abTk2,uiLen2);
-  GEDI_LCD_DrawString(0,40,10,10,"T3:%x Len:%04d",abTk3,uiLen3);
-
   return mrb_fixnum_value(ret);
 }
 

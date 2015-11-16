@@ -47,13 +47,10 @@ mrb_wifi_power(mrb_state *mrb, mrb_value klass)
 		  ret = GEDI_WIFI_Enable ();
 		  GEDI_CLOCK_Delay(500);
 	  }while(ret!=0);
-
-	  //GEDI_LCD_DrawString(0,0,20,20,"Wifi Habilitado");
   }
   else
   {
 	  ret = GEDI_WIFI_Disable ();
-	  //GEDI_LCD_DrawString(0,0,20,20,"Wifi Desabilitado");
   }
 
   return mrb_fixnum_value(ret);
