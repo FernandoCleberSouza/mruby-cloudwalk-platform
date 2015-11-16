@@ -59,9 +59,8 @@ mrb_gprs_connect(mrb_state *mrb, mrb_value klass)
   password = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@password"));
   sPass    = mrb_str_to_cstr(mrb, password);
 
-  /*TODO Implement*/
-  /*ret = OsWlLogin(sAPN, sUser, sPass, 0xff, timeout, keep_alive, NULL);*/
-
+  ret = GEDI_GSM_GPRS_Open(sAPN, sUser, sPass, 120000);
+  
   return mrb_fixnum_value(ret);
 }
 
@@ -73,10 +72,19 @@ static mrb_value
 mrb_gprs_connected_m(mrb_state *mrb, mrb_value klass)
 {
   mrb_int ret=0;
+  GEDI_GSM_e_NetStatus eStatus;
 
-  /*TODO Implement*/
-  /*ret = OsWlCheck();*/
-
+  GEDI_GSM_GPRS_Status(&eStatus);
+  if(eStatus == GEDI_GSM_NETSTATUS_ESTABLISHED)
+  {
+    ret = 0;
+  }
+  else if(eStatus == GEDI_GSM_NETSTATUS_ESTABLISHING)
+  {
+    ret = 1;
+  }
+  else { ret = -1; }
+  
   return mrb_fixnum_value(ret);
 }
 
@@ -85,9 +93,8 @@ mrb_gprs_disconnect(mrb_state *mrb, mrb_value klass)
 {
   mrb_int ret=0;
 
-  /*TODO Implement*/
-  /*OsWlLogout();*/
-
+  GEDI_GSM_GPRS_Close();
+  
   return mrb_true_value();
 }
 

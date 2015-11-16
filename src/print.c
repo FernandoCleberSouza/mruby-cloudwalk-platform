@@ -111,7 +111,6 @@ mrb_platform_print_s__print_bmp(mrb_state *mrb, mrb_value self)
   GEDI_e_Ret eRet;
   GEDI_PRNTR_Init(400);
   eRet = GEDI_PRNTR_DrawPictureFromFile(0, 0, (const CHAR *)path.value.p, 200);
-  printf("%d\n", eRet);
   GEDI_PRNTR_Output();
   GEDI_CLOCK_Delay(1000);
 
@@ -125,31 +124,7 @@ mrb_platform_print_s__check(mrb_state *mrb, mrb_value self)
   mrb_int ret;
 
   /*ret = OsPrnCheck();*/
-
   GEDI_PRNTR_Status(&ret);
-
-  GEDI_LCD_DrawString(0,20,20, 20, "Resultado:");
-
-  switch(ret){
-
-  case 0:
-	  GEDI_LCD_DrawString(0,40,20, 20, "0- STATUS OK");
-
-	  break;
-
-  case 1:
-	  GEDI_LCD_DrawString(0,40,20, 20, "1- OVERHEAT");
-
-	  break;
-
-  case 2:
-	  GEDI_LCD_DrawString(0,40,20, 20, "2- OUT OF PAPER");
-
-	  break;
-  default:
-	  break;
-  }
-
   return mrb_fixnum_value(ret);
 }
 
