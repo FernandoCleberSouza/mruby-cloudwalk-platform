@@ -39,23 +39,9 @@ mrb_system_s__set_backlight(mrb_state *mrb, mrb_value self)
 static mrb_value
 mrb_system_s__battery(mrb_state *mrb, mrb_value self)
 {
-  char battery[128];
-  GEDI_POWER_e_Src *peSource;
-  UINT *puiPercentage;
+  UINT puiPercentage;
 
-  memset(&battery, 0, sizeof(battery));
-
-  /*Get Power Source Type*/
- GEDI_POWER_SourceGet (&peSource);
- if(!peSource)
-  {
-	  GEDI_LCD_DrawString(0,0,20,20,"Fonte Energia: AC");
-	 // battery;;
-  }else{
-	  GEDI_POWER_BatteryGetCapacity (&puiPercentage);
-	  sprintf (battery, "Bateria em %d", puiPercentage);
-	  GEDI_LCD_DrawString(0,40,20,20,battery);
-  }
+  GEDI_POWER_BatteryGetCapacity (&puiPercentage);
 
   return mrb_str_new_cstr(mrb, battery);
 }
@@ -78,10 +64,6 @@ mrb_system_s_reboot(mrb_state *mrb, mrb_value self)
   mrb_int ret=0;
 
   ret = GEDI_POWER_Reset ();
-
-#ifdef Debug
-  GEDI_LCD_DrawString(0,0,20,20,"Rebooting...");
-#endif
 
   return mrb_fixnum_value(ret);
 }

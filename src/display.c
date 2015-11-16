@@ -29,7 +29,6 @@ mrb_display_s_clear_line(mrb_state *mrb, mrb_value self)
 
   mrb_get_args(mrb, "i", &line);
 
-
   GEDI_LCD_DrawString(0,line*FontH,FontW,FontH,"                ");
 
   return mrb_nil_value();
@@ -84,7 +83,6 @@ mrb_display_s_print_line(mrb_state *mrb, mrb_value self)
 
   /*TODO Implement*/
   GEDI_LCD_DrawString(x*FontW,y*FontH,FontW,FontH,(const CHAR *)buf.value.p);
-
 
   return mrb_nil_value();
 }
