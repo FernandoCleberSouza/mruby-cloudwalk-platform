@@ -22,8 +22,7 @@ mrb_gprs_start(mrb_state *mrb, mrb_value klass)
 {
   mrb_int ret=0;
 
-  /*TODO Implement*/
-  /*ret = OsWlLock();*/
+  ret = GEDI_GSM_Enable(GEDI_GSM_SIM1, "", 120000);
 
   return mrb_fixnum_value(ret);
 }
