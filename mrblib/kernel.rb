@@ -1,30 +1,30 @@
 module Kernel
   # TODO Implement
-  SCREEN_X_SIZE  = 21
-  SCREEN_Y_SIZE  = 7
-  XUI_KEY1       = 2
-  XUI_KEY2       = 3
-  XUI_KEY3       = 4
-  XUI_KEY4       = 5
-  XUI_KEY5       = 6
-  XUI_KEY6       = 7
-  XUI_KEY7       = 8
-  XUI_KEY8       = 9
-  XUI_KEY9       = 10
-  XUI_KEY0       = 11
-  XUI_KEYCANCEL  = 223
-  XUI_KEYTIMEOUT = 18
-  XUI_KEYCLEAR   = 14
-  XUI_KEYENTER   = 28
-  XUI_KEYSHARP   = 55
-  XUI_KEYF1      = 59
-  XUI_KEYF2      = 60
-  XUI_KEYF3      = 61
-  XUI_KEYF4      = 62
-  XUI_KEYALPHA   = 101
-  XUI_KEYFUNC    = 102
-  XUI_KEYUP      = 103
-  XUI_KEYDOWN    = 108
+  SCREEN_X_SIZE  = 320
+  SCREEN_Y_SIZE  = 480
+  XUI_KEY1       = 107
+  XUI_KEY2       = 108
+  XUI_KEY3       = 109
+  XUI_KEY4       = 110
+  XUI_KEY5       = 111
+  XUI_KEY6       = 112
+  XUI_KEY7       = 113
+  XUI_KEY8       = 114
+  XUI_KEY9       = 115
+  XUI_KEY0       = 106
+  XUI_KEYCANCEL  = 118
+  XUI_KEYTIMEOUT = 1
+  XUI_KEYCLEAR   = 119
+  XUI_KEYENTER   = 120
+  XUI_KEYSHARP   = 150
+  XUI_KEYF1      = 116
+  XUI_KEYALPHA   = XUI_KEYF1
+  XUI_KEYF2      = 101
+  XUI_KEYF3      = 102
+  XUI_KEYF4      = 103
+  XUI_KEYFUNC    = 2
+  XUI_KEYUP      = 121
+  XUI_KEYDOWN    = 117
   XUI_KEYMENU    = 139
   # TODO Implement
 
@@ -55,7 +55,7 @@ module Kernel
     XUI_KEYUP      => 0x07.chr,
     XUI_KEYDOWN    => 0x08.chr,
     XUI_KEYMENU    => 0x09.chr,
-    XUI_KEYALPHA   => 0x10.chr,
+    #XUI_KEYALPHA   => 0x10.chr,
     XUI_KEYSHARP   => 0x11.chr,
     XUI_KEYTIMEOUT => 0x12.chr,
     XUI_KEYENTER   => 0x0D.chr,
@@ -73,12 +73,22 @@ module Kernel
 
   def getc(timeout_io = nil)
     timeout_io ||= IO.timeout
-    convert_key(IO._getc(timeout_io))
+	key = IO._getc(timeout_io)
+    convert_key(key)
   end
 
   private
   def convert_key(value)
     PLATFORM_KEYS[value] || 0x1B.chr
   end
-end
 
+  def convert_input_type(type)
+    case type
+    when IO_INPUT_NUMBERS then INPUT_NUMBERS
+    when IO_INPUT_LETTERS then INPUT_LETTERS
+    when IO_INPUT_SECRET then INPUT_SECRET
+    else
+      INPUT_LETTERS
+    end
+  end
+end
