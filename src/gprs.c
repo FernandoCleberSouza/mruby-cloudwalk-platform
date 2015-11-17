@@ -76,16 +76,10 @@ mrb_gprs_connected_m(mrb_state *mrb, mrb_value klass)
   GEDI_GSM_e_NetStatus eStatus;
 
   GEDI_GSM_GPRS_Status(&eStatus);
-  if(eStatus == GEDI_GSM_NETSTATUS_ESTABLISHED)
-  {
-    ret = 0;
-  }
-  else if(eStatus == GEDI_GSM_NETSTATUS_ESTABLISHING)
-  {
-    ret = 1;
-  }
-  else { ret = -1; }
-  
+  if(eStatus & GEDI_GSM_NETSTATUS_CONNECTING) ret = 1;
+  else if(eStatus & GEDI_GSM_NETSTATUS_ESTABLISHED) ret = 0;
+  else ret = -1;
+
   return mrb_fixnum_value(ret);
 }
 

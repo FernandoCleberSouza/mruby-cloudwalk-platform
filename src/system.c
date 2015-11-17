@@ -40,9 +40,13 @@ static mrb_value
 mrb_system_s__battery(mrb_state *mrb, mrb_value self)
 {
   UINT puiPercentage;
+  char battery[128];
+  
+  memset(battery, 0, sizeof(battery));
 
   GEDI_POWER_BatteryGetCapacity (&puiPercentage);
-
+  sprintf(battery, "%d", puiPercentage);
+  
   return mrb_str_new_cstr(mrb, battery);
 }
 
