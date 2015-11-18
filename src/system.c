@@ -89,8 +89,7 @@ mrb_system_s_hwclock(mrb_state *mrb, mrb_value self)
   stRTC.bSecond = second;
   
   GEDI_EnterEng("E");
-  GEDI_CLOCK_RTCSet(&stRTC);
-  mrb_fixnum_value(0);
+  return mrb_fixnum_value(GEDI_CLOCK_RTCFSet(&stRTC));
 }
 
 void
