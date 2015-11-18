@@ -81,7 +81,7 @@ mrb_system_s_hwclock(mrb_state *mrb, mrb_value self)
 
   mrb_get_args(mrb, "iiiiii", &year, &month, &day, &hour, &minute, &second);
 
-  stRTC.bYear   = year;
+  stRTC.bYear   = year-100;
   stRTC.bMonth  = month;
   stRTC.bDay    = day;
   stRTC.bHour   = hour;
