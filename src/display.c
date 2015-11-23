@@ -9,8 +9,8 @@
 
 #include "gedi.h"
 
-#define FontH 20
-#define FontW 20
+#define FontH 16
+#define FontW 16
 
 
 mrb_value
