@@ -9,7 +9,7 @@
 
 #include "gedi.h"
 
-#define FontH 17
+#define FontH 22
 #define FontW 15
 
 
