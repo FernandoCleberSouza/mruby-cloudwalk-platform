@@ -120,10 +120,11 @@ static mrb_value
 mrb_system_s_sdk_version(mrb_state *mrb, mrb_value self)
 {
   char version[32]="\0";
+  unsigned int major=0,minor=0,release=0,build=0;
 
-  memset(&version, 0, sizeof(version));
+  GEDI_VersionGet(&major, &minor, &release, &build);
 
-  /*TODO Implement*/
+  sprintf(&version, "%d.%d.%d.%d", major, minor, release, build);
 
   return mrb_str_new_cstr(mrb, version);
 }
