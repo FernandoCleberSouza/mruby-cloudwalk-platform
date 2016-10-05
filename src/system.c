@@ -93,14 +93,11 @@ mrb_system_s_hwclock(mrb_state *mrb, mrb_value self)
 static mrb_value
 mrb_system_s_model(mrb_state *mrb, mrb_value self)
 {
-  char version[32]="\0";
+  char szName[21]="\0";
 
-  memset(&version, 0, sizeof(version));
+  GEDI_INFO_ProductNameGet(&szName);
 
-  /*TODO Implement*/
-  /*OsGetSysVer(TYPE_PED_VER, version);*/
-
-  return mrb_str_new_cstr(mrb, version);
+  return mrb_str_new_cstr(mrb, szName);
 }
 
 static mrb_value
