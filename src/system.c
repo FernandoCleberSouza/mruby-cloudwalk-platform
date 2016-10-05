@@ -132,13 +132,7 @@ mrb_system_s_sdk_version(mrb_state *mrb, mrb_value self)
 static mrb_value
 mrb_system_s_pinpad_version(mrb_state *mrb, mrb_value self)
 {
-  char version[32]="\0";
-
-  memset(&version, 0, sizeof(version));
-
-  /*TODO Implement*/
-
-  return mrb_str_new_cstr(mrb, version);
+  return mrb_str_new_cstr(mrb, "0");
 }
 
 void
