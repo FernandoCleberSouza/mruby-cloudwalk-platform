@@ -73,7 +73,6 @@ mrb_system_s_reboot(mrb_state *mrb, mrb_value self)
 static mrb_value
 mrb_system_s_hwclock(mrb_state *mrb, mrb_value self)
 {
-  /*ST_TIME t;*/
   mrb_value timezone;
   mrb_int year, month, day, hour, minute, second;
   GEDI_CLOCK_st_RTC stRTC;
@@ -143,10 +142,7 @@ mrb_system_s_install(mrb_state *mrb, mrb_value self)
 
   mrb_get_args(mrb, "SSi", &name, &path, &type);
 
-  /*TODO Implement*/
-  /*ret = OsInstallFile(RSTRING_PTR(name), RSTRING_PTR(path), type);*/
-
-  return mrb_fixnum_value(0);
+  return mrb_fixnum_value(GEDI_PM_UpdateFromFile(path, type));
 }
 
 void
