@@ -39,12 +39,12 @@ mrb_system_s__battery(mrb_state *mrb, mrb_value self)
 {
   UINT puiPercentage;
   char battery[128];
-  
+
   memset(battery, 0, sizeof(battery));
 
   GEDI_POWER_BatteryGetCapacity (&puiPercentage);
   sprintf(battery, "%d", puiPercentage);
-  
+
   return mrb_str_new_cstr(mrb, battery);
 }
 
@@ -86,9 +86,8 @@ mrb_system_s_hwclock(mrb_state *mrb, mrb_value self)
   stRTC.bHour   = hour;
   stRTC.bMinute = minute;
   stRTC.bSecond = second;
-  
-  GEDI_EnterEng("E");
-  return mrb_fixnum_value(GEDI_CLOCK_RTCFSet(&stRTC));
+
+  return mrb_fixnum_value(GEDI_CLOCK_RTCSet(&stRTC));
 }
 
 static mrb_value
