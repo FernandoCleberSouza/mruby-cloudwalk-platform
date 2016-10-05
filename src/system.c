@@ -11,8 +11,6 @@
 
 #include "gedi.h"
 
-
-
 static mrb_value
 mrb_system_s__serial(mrb_state *mrb, mrb_value self)
 {
@@ -31,7 +29,7 @@ mrb_system_s__set_backlight(mrb_state *mrb, mrb_value self)
 
   mrb_get_args(mrb, "i", &mode);
 
-  /*TODO Implement*/
+  GEDI_LCD_ContrastSet(mode);
 
   return mrb_fixnum_value(mode);
 }
