@@ -49,6 +49,19 @@ mrb_system_s__battery(mrb_state *mrb, mrb_value self)
 }
 
 static mrb_value
+mrb_s__power_supply(mrb_state *mrb, mrb_value self)
+{
+  GEDI_POWER_e_Src supply = 0;
+
+  GEDI_POWER_SourceGet(&supply);
+
+  if (supply == 1)
+    return mrb_fixnum_value(3);
+  else
+    return mrb_fixnum_value(2);
+}
+
+static mrb_value
 mrb_audio_s__beep(mrb_state *mrb, mrb_value self)
 {
   mrb_int tone, milliseconds;
@@ -159,6 +172,7 @@ mrb_system_init(mrb_state* mrb)
   mrb_define_class_method(mrb , system , "serial"         , mrb_system_s__serial        , MRB_ARGS_NONE());
   mrb_define_class_method(mrb , system , "backlight="     , mrb_system_s__set_backlight , MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb , system , "battery"        , mrb_system_s__battery       , MRB_ARGS_NONE());
+  mrb_define_class_method(mrb , system , "_power_supply"  , mrb_s__power_supply         , MRB_ARGS_NONE());
   mrb_define_class_method(mrb , audio  , "beep"           , mrb_audio_s__beep           , MRB_ARGS_REQ(2));
   mrb_define_class_method(mrb , system , "reboot"         , mrb_system_s_reboot         , MRB_ARGS_NONE());
   mrb_define_class_method(mrb , system , "hwclock"        , mrb_system_s_hwclock        , MRB_ARGS_REQ(7));
@@ -169,4 +183,3 @@ mrb_system_init(mrb_state* mrb)
   mrb_define_class_method(mrb , system , "pinpad_version" , mrb_system_s_pinpad_version , MRB_ARGS_NONE());
   mrb_define_class_method(mrb , system , "install"        , mrb_system_s_install        , MRB_ARGS_REQ(3));
 }
-

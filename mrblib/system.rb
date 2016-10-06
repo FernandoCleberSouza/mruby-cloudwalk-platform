@@ -27,6 +27,15 @@ class Platform
       end
     end
 
+    POWER_ADAPTER = 1
+    POWER_USB     = 2
+    POWER_BATTERY = 3
+
+    def self.power_supply
+      power = self._power_supply
+      power == POWER_ADAPTER || power == POWER_USB
+    end
+
     def self.versions
       hash = Hash.new
       hash["OS"]     = self.os_version
@@ -37,4 +46,3 @@ class Platform
     end
   end
 end
-
