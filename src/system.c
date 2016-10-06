@@ -142,7 +142,7 @@ mrb_system_s_install(mrb_state *mrb, mrb_value self)
 
   mrb_get_args(mrb, "SSi", &name, &path, &type);
 
-  return mrb_fixnum_value(GEDI_PM_UpdateFromFile(path, type));
+  return mrb_fixnum_value(GEDI_PM_UpdateFromFile(RSTRING_PTR(path), (GEDI_FS_e_Storage)type));
 }
 
 void
