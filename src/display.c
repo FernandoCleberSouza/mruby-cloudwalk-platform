@@ -13,8 +13,8 @@
 #define FontW 15
 
 
-mrb_value
 mrb_display_s_clear(mrb_state *mrb, mrb_value self)
+static void
 {
 
   GEDI_LCD_Clear();
@@ -22,7 +22,7 @@ mrb_display_s_clear(mrb_state *mrb, mrb_value self)
   return mrb_nil_value();
 }
 
-mrb_value
+static mrb_value
 mrb_display_s_clear_line(mrb_state *mrb, mrb_value self)
 {
   mrb_int line;
@@ -34,7 +34,7 @@ mrb_display_s_clear_line(mrb_state *mrb, mrb_value self)
   return mrb_nil_value();
 }
 
-mrb_value
+static mrb_value
 mrb_display_s_print_bitmap(mrb_state *mrb, mrb_value self)
 {
   mrb_value path;
@@ -73,7 +73,7 @@ mrb_display_s_print_bitmap(mrb_state *mrb, mrb_value self)
     ?:      optional given [mrb_bool]             true if preceding argument (optional) is given.
  */
 
-mrb_value
+static mrb_value
 mrb_display_s_print_line(mrb_state *mrb, mrb_value self)
 {
   mrb_value buf;
@@ -87,7 +87,7 @@ mrb_display_s_print_line(mrb_state *mrb, mrb_value self)
   return mrb_nil_value();
 }
 
-mrb_value
+static mrb_value
 mrb_display_s_print_status_bar(mrb_state *mrb, mrb_value self)
 {
   mrb_value path;
@@ -111,7 +111,7 @@ mrb_display_s_print_status_bar(mrb_state *mrb, mrb_value self)
   return mrb_nil_value();
 }
 
-mrb_value
+static mrb_value
 mrb_display_s_status_bar_slots_available(mrb_state *mrb, mrb_value self)
 {
   return mrb_fixnum_value(8);
