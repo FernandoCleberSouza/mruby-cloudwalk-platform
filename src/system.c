@@ -94,7 +94,7 @@ mrb_system_s_model(mrb_state *mrb, mrb_value self)
 {
   char szName[21]="\0";
 
-  GEDI_INFO_ProductNameGet(&szName);
+  GEDI_INFO_ProductNameGet((CHAR *)&szName);
 
   return mrb_str_new_cstr(mrb, szName);
 }
@@ -110,7 +110,7 @@ mrb_system_s_os_version(mrb_state *mrb, mrb_value self)
 {
   char version[21]="\0";
 
-  GEDI_INFO_FirmwareVersionGet(&version);
+  GEDI_INFO_FirmwareVersionGet((CHAR *)&version);
 
   return mrb_str_new_cstr(mrb, version);
 }
@@ -123,7 +123,7 @@ mrb_system_s_sdk_version(mrb_state *mrb, mrb_value self)
 
   GEDI_VersionGet(&major, &minor, &release, &build);
 
-  sprintf(&version, "%d.%d.%d.%d", major, minor, release, build);
+  sprintf(version, "%d.%d.%d.%d", major, minor, release, build);
 
   return mrb_str_new_cstr(mrb, version);
 }
