@@ -1,24 +1,41 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
+
 #include "mruby.h"
 #include "mruby/compile.h"
 #include "mruby/value.h"
 #include "mruby/array.h"
+#include "mruby/variable.h"
 #include "mruby/string.h"
 #include "mruby/hash.h"
 
 #include "gedi.h"
 
-#define FontH 22
-#define FontW 15
+int font_height;
+int font_width;
 
+int display_columns=0;
+char display_space[50]="\0";
 
-mrb_display_s_clear(mrb_state *mrb, mrb_value self)
 static void
+set_display_columns(mrb_state *mrb, mrb_value self)
 {
+  mrb_value screen;
+  mrb_int i;
 
+  memset(&display_space, 0, sizeof(display_space));
+
+  screen          = mrb_const_get(mrb, mrb_obj_value(mrb->object_class), mrb_intern_lit(mrb, "STDOUT"));
+  display_columns = mrb_fixnum(mrb_funcall(mrb, screen, "x", 0));
+
+  for (i = 0; i < display_columns; ++i ) strcat(display_space, " ");
+}
+
+static mrb_value
+mrb_display_s_clear(mrb_state *mrb, mrb_value self)
+{
   GEDI_LCD_Clear();
-
   return mrb_nil_value();
 }
 
@@ -26,11 +43,11 @@ static mrb_value
 mrb_display_s_clear_line(mrb_state *mrb, mrb_value self)
 {
   mrb_int line;
-
   mrb_get_args(mrb, "i", &line);
 
-  GEDI_LCD_DrawString(0,line*FontH,FontW,FontH,"                ");
+  if (display_columns != 0) set_display_columns(mrb, self);
 
+  GEDI_LCD_DrawString(0, line*font_height, font_width, font_height, display_space);
   return mrb_nil_value();
 }
 
@@ -40,9 +57,9 @@ mrb_display_s_print_bitmap(mrb_state *mrb, mrb_value self)
   mrb_value path;
   mrb_int x, y;
 
-  mrb_get_args(mrb, "zii", &path, &y, &x);
+  mrb_get_args(mrb, "Sii", &path, &y, &x);
 
-  GEDI_LCD_DrawPictureFromFile(x,y,(const CHAR *)path.value.p, GEDI_FS_STORAGE_PRIVATE);
+  GEDI_LCD_DrawPictureFromFile(x, y, RSTRING_PTR(path), GEDI_FS_STORAGE_PRIVATE);
 
   return mrb_nil_value();
 }
@@ -79,10 +96,9 @@ mrb_display_s_print_line(mrb_state *mrb, mrb_value self)
   mrb_value buf;
   mrb_int x, y;
 
-  mrb_get_args(mrb, "zii", &buf, &y, &x);
+  mrb_get_args(mrb, "Sii", &buf, &y, &x);
 
-  /*TODO Implement*/
-  GEDI_LCD_DrawString(x*FontW,y*FontH,FontW,FontH,(const CHAR *)buf.value.p);
+  GEDI_LCD_DrawString(x*font_width,y*font_height,font_width,font_height,(const CHAR *)RSTRING_PTR(buf));
 
   return mrb_nil_value();
 }
