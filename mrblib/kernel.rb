@@ -73,7 +73,7 @@ module Kernel
 
   def getc(timeout_io = nil)
     timeout_io ||= IO.timeout
-	key = IO._getc(timeout_io)
+    key = IO._getc(timeout_io)
     convert_key(key)
   end
 
