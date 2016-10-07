@@ -8,6 +8,10 @@ class Platform
     def self.print_in_line(buf, row=nil, column=nil)
       print_line(buf, row, column)
     end
+
+    def self.main_image
+      "main_#{Platform::System.model}.bmp"
+    end
   end
 end
 
