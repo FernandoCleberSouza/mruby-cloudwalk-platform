@@ -26,9 +26,20 @@ class Platform
     end
   end
 
+  def self.screen_definition
+    case PAX::System.model
+    when "mp20"
+      [20, 10]
+    when "gpos400"
+      [21, 20]
+    else
+      [20, 10]
+    end
+  end
+
   # Will be called at RunTime boot
   def self.setup
-    Screen.setup(21, 12)
+    Screen.setup(*screen_definition)
     begin
       require 'posxml_parser'
       require 'cloudwalk_handshake'
