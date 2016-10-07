@@ -27,6 +27,10 @@ class Platform
       end
     end
 
+    def self.serial
+      self._serial
+    end
+
     POWER_ADAPTER = 1
     POWER_USB     = 2
     POWER_BATTERY = 3
