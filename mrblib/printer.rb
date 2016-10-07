@@ -50,6 +50,10 @@ class Platform
       ret
     end
 
+    def self.allow?
+      System.model != "MP20"
+    end
+
     # @brief Start Printer Device.
     #
     # @retval RET_OK Success.
@@ -136,7 +140,7 @@ class Platform
     #
     # @return [NilClass] Allways returns nil.
     def self.feed(pixels = self.single_height)
-      self._feed(pixels)
+      self._feed(pixels) if self.allow?
     end
 
     # @brief Write text on print buffer.
@@ -185,4 +189,3 @@ class Platform
     end
   end
 end
-
