@@ -109,7 +109,7 @@ mrb_system_s_model(mrb_state *mrb, mrb_value self)
 
   GEDI_INFO_ProductNameGet((CHAR *)&szName);
 
-  return mrb_str_new_cstr(mrb, szName);
+  return mrb_funcall(mrb, mrb_str_new_cstr(mrb, szName), "downcase", 0);
 }
 
 static mrb_value
