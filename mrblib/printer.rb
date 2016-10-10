@@ -51,7 +51,7 @@ class Platform
     end
 
     def self.allow?
-      System.model != "MP20"
+      System.model != "mp20"
     end
 
     # @brief Start Printer Device.
