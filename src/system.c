@@ -55,10 +55,7 @@ mrb_s__power_supply(mrb_state *mrb, mrb_value self)
 
   GEDI_POWER_SourceGet(&supply);
 
-  if (supply == 1)
-    return mrb_fixnum_value(3);
-  else
-    return mrb_fixnum_value(2);
+  return mrb_fixnum_value(!supply);
 }
 
 static mrb_value
