@@ -36,8 +36,7 @@ class Platform
     POWER_BATTERY = 3
 
     def self.power_supply
-      power = self._power_supply
-      power == POWER_ADAPTER || power == POWER_USB
+      self._power_supply
     end
 
     def self.versions
