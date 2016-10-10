@@ -27,7 +27,7 @@ class Platform
   end
 
   def self.screen_definition
-    case PAX::System.model
+    case System.model
     when "mp20"
       [20, 10]
     when "gpos400"
