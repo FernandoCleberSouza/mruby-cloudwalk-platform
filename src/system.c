@@ -181,7 +181,7 @@ mrb_system_init(mrb_state* mrb)
   audio    = mrb_define_class_under(mrb, platform, "Audio", mrb->object_class);
   system   = mrb_define_class_under(mrb, platform, "System", mrb->object_class);
 
-  mrb_define_class_method(mrb , system , "_serial"         , mrb_system_s__serial       , MRB_ARGS_NONE());
+  mrb_define_class_method(mrb , system , "serial"         , mrb_system_s_serial         , MRB_ARGS_NONE());
   mrb_define_class_method(mrb , system , "backlight="     , mrb_system_s__set_backlight , MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb , system , "battery"        , mrb_system_s_battery        , MRB_ARGS_NONE());
   mrb_define_class_method(mrb , system , "_power_supply"  , mrb_s__power_supply         , MRB_ARGS_NONE());
