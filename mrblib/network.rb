@@ -31,6 +31,10 @@ class Platform::Network
     @interface.init(options)
   end
 
+  def self.sim_id
+    ""
+  end
+
   # TODO Scalone: Raise error if problem or do not exists
   def self.dhcp_client_start
     self._dhcp_client_start(@interface.type)
@@ -48,4 +52,3 @@ class Platform::Network
     end
   end
 end
-
