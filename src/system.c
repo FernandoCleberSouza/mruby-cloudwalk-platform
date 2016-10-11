@@ -12,7 +12,7 @@
 #include "gedi.h"
 
 static mrb_value
-mrb_system_s__serial(mrb_state *mrb, mrb_value self)
+mrb_system_s_serial(mrb_state *mrb, mrb_value self)
 {
   char serial[20];
 
