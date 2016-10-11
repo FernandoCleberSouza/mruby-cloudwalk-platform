@@ -155,6 +155,25 @@ mrb_system_s_install(mrb_state *mrb, mrb_value self)
   return mrb_fixnum_value(GEDI_PM_UpdateFromFile(RSTRING_PTR(path), (GEDI_FS_e_Storage)type));
 }
 
+static mrb_value
+mrb_system_s_get_time(mrb_state *mrb, mrb_value self)
+{
+  mrb_value array;
+  GEDI_CLOCK_st_RTC stRTC;
+
+  GEDI_CLOCK_RTCGet(&stRTC);
+
+  array  = mrb_ary_new(mrb);
+  mrb_ary_push(mrb, array, mrb_fixnum_value(2000 + stRTC.bYear));
+  mrb_ary_push(mrb, array, mrb_fixnum_value(stRTC.bMonth));
+  mrb_ary_push(mrb, array, mrb_fixnum_value(stRTC.bDay));
+  mrb_ary_push(mrb, array, mrb_fixnum_value(stRTC.bHour));
+  mrb_ary_push(mrb, array, mrb_fixnum_value(stRTC.bMinute));
+  mrb_ary_push(mrb, array, mrb_fixnum_value(stRTC.bSecond));
+
+  return array;
+}
+
 void
 mrb_system_init(mrb_state* mrb)
 {
@@ -179,4 +198,5 @@ mrb_system_init(mrb_state* mrb)
   mrb_define_class_method(mrb , system , "sdk_version"    , mrb_system_s_sdk_version    , MRB_ARGS_NONE());
   mrb_define_class_method(mrb , system , "pinpad_version" , mrb_system_s_pinpad_version , MRB_ARGS_NONE());
   mrb_define_class_method(mrb , system , "install"        , mrb_system_s_install        , MRB_ARGS_REQ(3));
+  mrb_define_class_method(mrb , system , "get_time"       , mrb_system_s_get_time       , MRB_ARGS_NONE());
 }

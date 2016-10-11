@@ -1,4 +1,8 @@
 class Time
+  def self.now
+    Time.new(*Platform::System.get_time)
+  end
+
   def hwclock(offset = nil)
     if offset
       if offset.include? "+"
