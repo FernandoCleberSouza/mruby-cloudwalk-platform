@@ -106,25 +106,31 @@ mrb_display_s_print_line(mrb_state *mrb, mrb_value self)
 static mrb_value
 mrb_display_s_print_status_bar(mrb_state *mrb, mrb_value self)
 {
-  mrb_value path;
-  mrb_int slot = 0;
+  char model[10];
+  char filename[20];
+  char szName[21]="\0";
 
-  mrb_get_args(mrb, "io", &slot, &path);
+  memset(model, 0, sizeof(model));
+  memset(filename, 0, sizeof(filename));
 
-  /*TODO Implement*/
-  /*if (mrb_string_p(path)) {*/
-    /*if (XuiSetStatusbarIcon(slot, RSTRING_PTR(path)) == 0)*/
-      /*return mrb_true_value();*/
-    /*else*/
-      /*return mrb_nil_value();*/
-  /*} else {*/
-    /*if (XuiSetStatusbarIcon(slot, NULL) == 0)*/
-      /*return mrb_true_value();*/
-    /*else*/
-      /*return mrb_nil_value();*/
-    /*return mrb_nil_value();*/
-  /*}*/
-  return mrb_nil_value();
+  GEDI_INFO_ProductNameGet((CHAR *)&szName);
+  strcpy(model, RSTRING_PTR(mrb_funcall(mrb, mrb_str_new_cstr(mrb, szName), "downcase", 0)));
+
+  sprintf(filename, "./shared/background_%s.bmp", model);
+  GEDI_LCD_StatusBarSetIconFromFile(GEDI_LCD_ICON_EMPTY, filename, GEDI_FS_STORAGE_PRIVATE);
+
+  sprintf(filename, "./shared/wifi_%s.bmp", model);
+  GEDI_LCD_StatusBarSetIconFromFile(GEDI_LCD_ICON_WIFI, filename, GEDI_FS_STORAGE_PRIVATE);
+
+  sprintf(filename, "./shared/gprs_%s.bmp", model);
+  GEDI_LCD_StatusBarSetIconFromFile(GEDI_LCD_ICON_GSM_SIGNAL, filename, GEDI_FS_STORAGE_PRIVATE);
+
+  sprintf(filename, "./shared/battery_%s.bmp", model);
+  GEDI_LCD_StatusBarSetIconFromFile(GEDI_LCD_ICON_BATTERY, filename, GEDI_FS_STORAGE_PRIVATE);
+
+  GEDI_LCD_StatusBarShow(GEDI_LCD_STATUSBARPOSITION_TOP, 1, "i i i", GEDI_LCD_ICON_BATTERY, GEDI_LCD_ICON_GSM_SIGNAL, GEDI_LCD_ICON_WIFI);
+
+  return mrb_true_value();
 }
 
 static mrb_value
