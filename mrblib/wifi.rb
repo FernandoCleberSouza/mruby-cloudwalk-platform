@@ -10,12 +10,12 @@ class Platform::Network::Wifi
   AUTH_NONE_WEP        = "2"
   AUTH_NONE_WEP_SHARED = "3"
   AUTH_IEEE8021X       = "4"
-  AUTH_WPA_PSK         = "5"
-  AUTH_WPA_EAP         = "6"
+  AUTH_WPA_PSK         = "wpapsk"
+  AUTH_WPA_EAP         = "wpaeap"
   AUTH_WPA_WPA2_PSK    = "7"
   AUTH_WPA_WPA2_EAP    = "8"
-  AUTH_WPA2_PSK        = "9"
-  AUTH_WPA2_EAP        = "10"
+  AUTH_WPA2_PSK        = "wpa2psk"
+  AUTH_WPA2_EAP        = "wpa2eap"
 
   PARE_CIPHERS_NONE   = 0x00.chr
   PARE_CIPHERS_WEP64  = 0x01.chr
