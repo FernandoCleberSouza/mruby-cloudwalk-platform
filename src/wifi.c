@@ -246,25 +246,41 @@ mrb_wifi_disconnect(mrb_state *mrb, mrb_value klass)
 static mrb_value
 mrb_wifi__scan(mrb_state *mrb, mrb_value klass)
 {
-  /*TODO Implement*/
-  /*ST_WifiApInfo * aps;*/
-  mrb_int ret = 0, i = 0;
+  mrb_int i = 0;
+  UINT uiListSize = 0;
+  GEDI_WIFI_st_Info *aps;
+  GEDI_WIFI_e_Status peStatusMask;
+  // mrb_value context;
+  // char debug[1024];
+  //
+  // memset(debug, 0, sizeof(debug));
+  // context = mrb_const_get(mrb, mrb_obj_value(mrb->object_class), mrb_intern_lit(mrb, "ContextLog"));
+  // mrb_funcall(mrb, context, "info", 1, mrb_str_new_cstr(mrb, "inside mrb_wifi__scan"));
 
-  /*ret = OsWifiScan(&aps);*/
+  GEDI_WIFI_Enable();
+  GEDI_WIFI_Scan();
 
-  if (ret < 0) return mrb_false_value();
+  do {
+    GEDI_WIFI_Status(&peStatusMask);
+  } while (peStatusMask == GEDI_WIFI_STATUS_SCANNING);
 
-  /*for (i=0;i < ret;i++) {*/
-    /*mrb_funcall(mrb, klass, "ap", 7,*/
-        /*mrb_str_new_cstr(mrb, aps[i].Essid),*/
-        /*mrb_str_new_cstr(mrb, aps[i].Bssid),*/
-        /*mrb_fixnum_value(aps[i].Channel),*/
-        /*mrb_fixnum_value(aps[i].Mode),*/
-        /*mrb_fixnum_value(aps[i].Rssi),*/
-        /*mrb_fixnum_value(aps[i].AuthMode),*/
-        /*mrb_fixnum_value(aps[i].SecMode)*/
-        /*);*/
-  /*}*/
+  GEDI_WIFI_APListGet(&aps, &uiListSize);
+
+  if (uiListSize < 0) return mrb_false_value();
+
+  for (i = 0; i < uiListSize; i++) {
+    mrb_funcall(mrb, klass, "ap", 9,
+      mrb_str_new_cstr(mrb, (char *)aps[i].Address),
+      mrb_str_new_cstr(mrb, (char *)aps[i].ESSID),
+      mrb_str_new_cstr(mrb, (char *)aps[i].Mode),
+      mrb_str_new_cstr(mrb, (char *)aps[i].Freq),
+      mrb_str_new_cstr(mrb, (char *)aps[i].Quality),
+      mrb_str_new_cstr(mrb, (char *)aps[i].Type_1),
+      mrb_str_new_cstr(mrb, (char *)aps[i].GroupCipher_1),
+      mrb_str_new_cstr(mrb, (char *)aps[i].PairwiseCiphers_1),
+      mrb_str_new_cstr(mrb, (char *)aps[i].Authentication_1)
+    );
+  }
   return mrb_true_value();
 }
 
