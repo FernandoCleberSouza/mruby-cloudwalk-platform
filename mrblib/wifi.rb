@@ -84,16 +84,16 @@ class Platform::Network::Wifi
     @aps
   end
 
-  def self.ap(_essid, _bssid, _channel, _mode, _rssi, _authentication, _cipher)
+  def self.ap(_bssid, _essid, _mode, _channel, _rssi, _type_1, _groupcipher_1, _pairwiseciphers_1, _authentication_1)
     @aps ||= []
     @aps << {
       :essid          => _essid,
       :bssid          => _bssid,
-      :channel        => _channel.to_s,
-      :mode           => INVERTED_MODES[_mode.to_s],
-      :rssi           => _rssi,
-      :authentication => INVERTED_AUTHENTICATIONS[_authentication.to_s],
-      :cipher         => INVERTED_CIPHERS[_cipher.chr]
+      :channel        => _channel[-3..-2].to_i,
+      :mode           => INVERTED_MODES[_mode],
+      :rssi           => _rssi[0],
+      :authentication => INVERTED_AUTHENTICATIONS["#{_type_1.downcase}#{_authentication_1.downcase}"],
+      :cipher         => INVERTED_CIPHERS["#{_groupcipher_1.downcase}"]
     }
   end
 end
