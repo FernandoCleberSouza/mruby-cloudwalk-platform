@@ -21,8 +21,9 @@ class Platform::Network::Wifi
   PARE_CIPHERS_WEP64  = 0x01.chr
   PARE_CIPHERS_WEP128 = 0x02.chr
   PARE_CIPHERS_WEPX   = 0x04.chr
-  PARE_CIPHERS_CCMP   = 0x10.chr
-  PARE_CIPHERS_TKIP   = 0x20.chr
+  PARE_CIPHERS_CCMP   = "ccmp"
+  PARE_CIPHERS_TKIP   = "tki"
+  PARE_CIPHERS_CCMPTKIP = "CCMPTKI"
 
   MODE_IBSS    = "1"
   MODE_STATION = "0"
