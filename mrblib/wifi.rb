@@ -26,7 +26,7 @@ class Platform::Network::Wifi
   PARE_CIPHERS_CCMPTKIP = "CCMPTKI"
 
   MODE_IBSS    = "1"
-  MODE_STATION = "0"
+  MODE_STATION = "Managed"
 
   AUTHENTICATIONS = {
     "open"       => AUTH_NONE_OPEN,
