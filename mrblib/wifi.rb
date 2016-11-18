@@ -48,7 +48,8 @@ class Platform::Network::Wifi
     "wep128" => PARE_CIPHERS_WEP128,
     "wepx"   => PARE_CIPHERS_WEPX,
     "ccmp"   => PARE_CIPHERS_CCMP,
-    "tkip"   => PARE_CIPHERS_TKIP
+    "tkip"   => PARE_CIPHERS_TKIP,
+    "ccmptki"=> PARE_CIPHERS_CCMPTKIP
   }
   INVERTED_CIPHERS = CIPHERS.invert
 
