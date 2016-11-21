@@ -262,6 +262,7 @@ mrb_wifi__scan(mrb_state *mrb, mrb_value klass)
 
   do {
     GEDI_WIFI_Status(&peStatusMask);
+    GEDI_CLOCK_Delay(500);
   } while (peStatusMask == GEDI_WIFI_STATUS_SCANNING);
 
   GEDI_WIFI_APListGet(&aps, &uiListSize);
