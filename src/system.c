@@ -157,13 +157,15 @@ mrb_system_s_install(mrb_state *mrb, mrb_value self)
 static mrb_value
 mrb_system_s_get_time(mrb_state *mrb, mrb_value self)
 {
+  mrb_int year;
   mrb_value array;
   GEDI_CLOCK_st_RTC stRTC;
 
   GEDI_CLOCK_RTCGet(&stRTC);
 
   array  = mrb_ary_new(mrb);
-  mrb_ary_push(mrb, array, mrb_fixnum_value(2000 + stRTC.bYear));
+  year = (2000 + stRTC.bYear > 2100) ? 2020 : 2000 + stRTC.bYear;
+  mrb_ary_push(mrb, array, mrb_fixnum_value(year));
   mrb_ary_push(mrb, array, mrb_fixnum_value(stRTC.bMonth));
   mrb_ary_push(mrb, array, mrb_fixnum_value(stRTC.bDay));
   mrb_ary_push(mrb, array, mrb_fixnum_value(stRTC.bHour));
