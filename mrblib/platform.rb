@@ -37,10 +37,15 @@ class Platform
     end
   end
 
+  def self.define_device_modules
+    Device.const_set(:EMV, Platform::EMV)
+  end
+
   # Will be called at RunTime boot
   def self.setup
     Screen.setup(*screen_definition)
     begin
+      self.define_device_modules
       require 'posxml_parser'
       require 'cloudwalk_handshake'
       CloudwalkHandshake.configure!
