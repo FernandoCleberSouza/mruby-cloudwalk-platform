@@ -18,15 +18,14 @@ module Kernel
   XUI_KEYENTER   = 120
   XUI_KEYSHARP   = 150
   XUI_KEYF1      = 116
-  XUI_KEYALPHA   = XUI_KEYF1
+  XUI_KEYALPHA   = 121
   XUI_KEYF2      = 101
   XUI_KEYF3      = 102
   XUI_KEYF4      = 103
+  XUI_KEYUP      = 104
+  XUI_KEYDOWN    = 105
   XUI_KEYFUNC    = 2
-  XUI_KEYUP      = 121
-  XUI_KEYDOWN    = 117
   XUI_KEYMENU    = 139
-  # TODO Implement
 
   IO_INPUT_NUMBERS = :numbers
   IO_INPUT_LETTERS = :letters
@@ -52,10 +51,10 @@ module Kernel
     XUI_KEYF3      => 0x03.chr,
     XUI_KEYF4      => 0x04.chr,
     XUI_KEYFUNC    => 0x06.chr,
-    XUI_KEYUP      => 0x07.chr,
-    XUI_KEYDOWN    => 0x08.chr,
+    XUI_KEYUP      => 0x01.chr, # Same as F1
+    XUI_KEYDOWN    => 0x02.chr, # Same as F2
     XUI_KEYMENU    => 0x09.chr,
-    #XUI_KEYALPHA   => 0x10.chr,
+    XUI_KEYALPHA   => 0x10.chr,
     XUI_KEYSHARP   => 0x11.chr,
     XUI_KEYTIMEOUT => 0x12.chr,
     XUI_KEYENTER   => 0x0D.chr,
