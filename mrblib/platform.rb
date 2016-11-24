@@ -14,7 +14,7 @@ class Platform
     class << self
       attr_accessor :timeout
     end
-	self.timeout = DEFAULT_TIMEOUT
+    self.timeout = DEFAULT_TIMEOUT
 
     # get_string c implementation.
     #
