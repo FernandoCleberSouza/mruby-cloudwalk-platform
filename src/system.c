@@ -175,6 +175,23 @@ mrb_system_s_get_time(mrb_state *mrb, mrb_value self)
   return array;
 }
 
+static mrb_value
+mrb_system_s_status_bar(mrb_state *mrb, mrb_value self)
+{
+  mrb_value bg, wifi, gprs, battery;
+
+  mrb_get_args(mrb, "SSSS", &bg, &wifi, &gprs, &battery);
+
+  GEDI_LCD_StatusBarSetIconFromFile(GEDI_LCD_ICON_EMPTY      , RSTRING_PTR(bg)      , GEDI_FS_STORAGE_PRIVATE);
+  GEDI_LCD_StatusBarSetIconFromFile(GEDI_LCD_ICON_WIFI       , RSTRING_PTR(wifi)    , GEDI_FS_STORAGE_PRIVATE);
+  GEDI_LCD_StatusBarSetIconFromFile(GEDI_LCD_ICON_GSM_SIGNAL , RSTRING_PTR(gprs)    , GEDI_FS_STORAGE_PRIVATE);
+  GEDI_LCD_StatusBarSetIconFromFile(GEDI_LCD_ICON_BATTERY    , RSTRING_PTR(battery) , GEDI_FS_STORAGE_PRIVATE);
+
+  GEDI_LCD_StatusBarShow(GEDI_LCD_STATUSBARPOSITION_TOP, 1, "i i i", GEDI_LCD_ICON_BATTERY, GEDI_LCD_ICON_GSM_SIGNAL, GEDI_LCD_ICON_WIFI);
+
+  return mrb_true_value();
+}
+
 void
 mrb_system_init(mrb_state* mrb)
 {
@@ -200,4 +217,5 @@ mrb_system_init(mrb_state* mrb)
   mrb_define_class_method(mrb , system , "pinpad_version" , mrb_system_s_pinpad_version , MRB_ARGS_NONE());
   mrb_define_class_method(mrb , system , "install"        , mrb_system_s_install        , MRB_ARGS_REQ(3));
   mrb_define_class_method(mrb , system , "get_time"       , mrb_system_s_get_time       , MRB_ARGS_NONE());
+  mrb_define_class_method(mrb , system , "status_bar"     , mrb_system_s_status_bar     , MRB_ARGS_REQ(4));
 }

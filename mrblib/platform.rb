@@ -37,6 +37,14 @@ class Platform
     end
   end
 
+  def self.icons_status_bar
+    model = System.model.to_s
+    [
+      "./shared/background_#{model}.bmp", "./shared/wifi_#{model}.bmp",
+      "./shared/gprs_#{model}.bmp", "./shared/battery_#{model}.bmp"
+    ]
+  end
+
   def self.define_device_modules
     Device.const_set(:EMV, Platform::EMV)
   end
@@ -50,6 +58,7 @@ class Platform
       require 'cloudwalk_handshake'
       CloudwalkHandshake.configure!
       self.setup_keyboard
+      self.setup_status_bar
     rescue LoadError
     rescue NameError
     end
@@ -62,5 +71,10 @@ class Platform
   def self.setup_keyboard
     Device::IO.setup_keyboard(["qzQZ _,.", "abcABC", "defDEF", "ghiGHI", "jklJKL",
                               "mnoMNO", "prsPRS", "tuvTUV", "wxyWXY", "spSP"])
+  end
+
+  def self.setup_status_bar
+    Platform::System.status_bar(*icons_status_bar)
+    DaFunk::Helper::StatusBar.managment = false if DaFunk::Helper::StatusBar.respond_to?(:managment=)
   end
 end
