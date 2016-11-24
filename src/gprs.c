@@ -76,11 +76,8 @@ mrb_gprs_connected_m(mrb_state *mrb, mrb_value klass)
   GEDI_GSM_e_NetStatus eStatus;
 
   GEDI_GSM_GPRS_Status(&eStatus);
-  if(eStatus & GEDI_GSM_NETSTATUS_CONNECTING) ret = 1;
-  else if(eStatus & GEDI_GSM_NETSTATUS_ESTABLISHED) ret = 0;
-  else ret = -1;
 
-  return mrb_fixnum_value(ret);
+  return mrb_fixnum_value((mrb_int)eStatus);
 }
 
 static mrb_value
@@ -114,8 +111,8 @@ mrb_gprs_init(mrb_state* mrb)
 
   mrb_define_class_method(mrb, gprs, "start", mrb_gprs_start, MRB_ARGS_NONE());
   mrb_define_class_method(mrb, gprs, "power", mrb_gprs_power, MRB_ARGS_REQ(1));
-  mrb_define_class_method(mrb, gprs, "connect", mrb_gprs_connect, MRB_ARGS_OPT(1));
-  mrb_define_class_method(mrb, gprs, "connected?", mrb_gprs_connected_m, MRB_ARGS_NONE());
+  mrb_define_class_method(mrb, gprs, "_connect", mrb_gprs_connect, MRB_ARGS_OPT(1));
+  mrb_define_class_method(mrb, gprs, "_connected?", mrb_gprs_connected_m, MRB_ARGS_NONE());
   mrb_define_class_method(mrb, gprs, "disconnect", mrb_gprs_disconnect, MRB_ARGS_NONE());
   mrb_define_class_method(mrb, gprs, "signal", mrb_gprs_signal, MRB_ARGS_NONE());
 }
