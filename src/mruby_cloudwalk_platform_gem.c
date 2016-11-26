@@ -19,6 +19,7 @@ void mrb_io_init(mrb_state *mrb);
 void mrb_ethernet_init(mrb_state *mrb);
 void mrb_print_init(mrb_state *mrb);
 void mrb_crypto_init(mrb_state *mrb);
+void mrb_smart_card_init(mrb_state *mrb);
 
 void
 mrb_mruby_cloudwalk_platform_gem_init(mrb_state* mrb)
@@ -34,6 +35,7 @@ mrb_mruby_cloudwalk_platform_gem_init(mrb_state* mrb)
   mrb_ethernet_init(mrb); DONE;
   mrb_print_init(mrb); DONE;
   mrb_crypto_init(mrb); DONE;
+  mrb_smart_card_init(mrb); DONE;
 }
 
 void
