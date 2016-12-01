@@ -17,7 +17,7 @@ class Platform::Network::Wifi
   AUTH_WPA2_PSK        = "wpa2psk"
   AUTH_WPA2_EAP        = "wpa2eap"
 
-  PARE_CIPHERS_NONE   = 0x00.chr
+  PARE_CIPHERS_NONE   = ""
   PARE_CIPHERS_WEP64  = 0x01.chr
   PARE_CIPHERS_WEP128 = 0x02.chr
   PARE_CIPHERS_WEPX   = 0x04.chr
