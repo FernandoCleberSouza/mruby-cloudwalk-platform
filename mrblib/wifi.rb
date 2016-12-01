@@ -6,26 +6,29 @@ class Platform::Network::Wifi
     @media = :wifi
   end
 
-  AUTH_NONE_OPEN       = "1"
-  AUTH_NONE_WEP        = "2"
-  AUTH_NONE_WEP_SHARED = "3"
-  AUTH_IEEE8021X       = "4"
+  #NOT SUPPORTED
+  #AUTH_NONE_WEP        = "2"
+  #AUTH_NONE_WEP_SHARED = "3"
+  #AUTH_IEEE8021X       = "4"
+  #AUTH_WPA_WPA2_PSK    = "7"
+  #AUTH_WPA_WPA2_EAP    = "8"
+  AUTH_NONE_OPEN       = ""
   AUTH_WPA_PSK         = "wpapsk"
   AUTH_WPA_EAP         = "wpaeap"
-  AUTH_WPA_WPA2_PSK    = "7"
-  AUTH_WPA_WPA2_EAP    = "8"
   AUTH_WPA2_PSK        = "wpa2psk"
   AUTH_WPA2_EAP        = "wpa2eap"
 
-  PARE_CIPHERS_NONE   = 0x00.chr
-  PARE_CIPHERS_WEP64  = 0x01.chr
-  PARE_CIPHERS_WEP128 = 0x02.chr
-  PARE_CIPHERS_WEPX   = 0x04.chr
+  #NOT SUPPORTED
+  #PARE_CIPHERS_WEP64  = 0x01.chr
+  #PARE_CIPHERS_WEP128 = 0x02.chr
+  #PARE_CIPHERS_WEPX   = 0x04.chr
+  PARE_CIPHERS_NONE   = ""
   PARE_CIPHERS_CCMP   = "ccmp"
-  PARE_CIPHERS_TKIP   = "tki"
-  PARE_CIPHERS_CCMPTKIP = "CCMPTKI"
+  PARE_CIPHERS_TKIP   = "tkip"
+  PARE_CIPHERS_CCMPTKIP = "ccmptki"
 
-  MODE_IBSS    = "1"
+  #NOT SUPPORTED
+  #MODE_IBSS    = "1"
   MODE_STATION = "Managed"
 
   AUTHENTICATIONS = {
@@ -43,13 +46,13 @@ class Platform::Network::Wifi
   INVERTED_AUTHENTICATIONS = AUTHENTICATIONS.invert
 
   CIPHERS = {
-    "none"   => PARE_CIPHERS_NONE,
-    "wep64"  => PARE_CIPHERS_WEP64,
-    "wep128" => PARE_CIPHERS_WEP128,
-    "wepx"   => PARE_CIPHERS_WEPX,
-    "ccmp"   => PARE_CIPHERS_CCMP,
-    "tkip"   => PARE_CIPHERS_TKIP,
-    "ccmptki"=> PARE_CIPHERS_CCMPTKIP
+    "none"     => PARE_CIPHERS_NONE,
+    "wep64"    => PARE_CIPHERS_WEP64,
+    "wep128"   => PARE_CIPHERS_WEP128,
+    "wepx"     => PARE_CIPHERS_WEPX,
+    "ccmp"     => PARE_CIPHERS_CCMP,
+    "tkip"     => PARE_CIPHERS_TKIP,
+    "ccmptkip" => PARE_CIPHERS_CCMPTKIP
   }
   INVERTED_CIPHERS = CIPHERS.invert
 
@@ -93,7 +96,7 @@ class Platform::Network::Wifi
       :mode           => INVERTED_MODES[_mode],
       :rssi           => _rssi[0],
       :authentication => INVERTED_AUTHENTICATIONS["#{_type_1.downcase}#{_authentication_1.downcase}"],
-      :cipher         => INVERTED_CIPHERS["#{_groupcipher_1.downcase}"]
+      :cipher         => INVERTED_CIPHERS["#{_pairwiseciphers_1.downcase}"]
     }
   end
 end
