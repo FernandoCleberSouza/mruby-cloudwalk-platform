@@ -36,17 +36,13 @@ mrb_wifi_power(mrb_state *mrb, mrb_value klass)
   mrb_int state, ret;
   mrb_get_args(mrb, "i", &state);
 
-  if(state)
-  {
-	  do
-	  {
-		  ret = GEDI_WIFI_Enable ();
-		  GEDI_CLOCK_Delay(500);
-	  }while(ret!=0);
-  }
-  else
-  {
-	  ret = GEDI_WIFI_Disable ();
+  if(state) {
+    do {
+      ret = GEDI_WIFI_Enable();
+      GEDI_CLOCK_Delay(500);
+    } while (ret!=0);
+  } else {
+    ret = GEDI_WIFI_Disable();
   }
 
   return mrb_fixnum_value(ret);
@@ -215,11 +211,11 @@ mrb_wifi_init(mrb_state *mrb)
   network  = mrb_class_get_under(mrb, platform, "Network");
   wifi     = mrb_define_class_under(mrb, network, "Wifi", mrb->object_class);
 
-  mrb_define_class_method(mrb, wifi, "start", mrb_wifi_start, MRB_ARGS_NONE());
-  mrb_define_class_method(mrb, wifi, "power", mrb_wifi_power, MRB_ARGS_REQ(1));
-  mrb_define_class_method(mrb, wifi, "connect", mrb_wifi_connect, MRB_ARGS_OPT(1));
-  mrb_define_class_method(mrb, wifi, "connected?", mrb_wifi_connected_m, MRB_ARGS_NONE());
-  mrb_define_class_method(mrb, wifi, "disconnect", mrb_wifi_disconnect, MRB_ARGS_NONE());
-  mrb_define_class_method(mrb, wifi, "_scan", mrb_wifi__scan, MRB_ARGS_NONE());
+  mrb_define_class_method(mrb , wifi , "start"      , mrb_wifi_start       , MRB_ARGS_NONE());
+  mrb_define_class_method(mrb , wifi , "power"      , mrb_wifi_power       , MRB_ARGS_REQ(1));
+  mrb_define_class_method(mrb , wifi , "connect"    , mrb_wifi_connect     , MRB_ARGS_OPT(1));
+  mrb_define_class_method(mrb , wifi , "connected?" , mrb_wifi_connected_m , MRB_ARGS_NONE());
+  mrb_define_class_method(mrb , wifi , "disconnect" , mrb_wifi_disconnect  , MRB_ARGS_NONE());
+  mrb_define_class_method(mrb , wifi , "_scan"      , mrb_wifi__scan       , MRB_ARGS_NONE());
 }
 
