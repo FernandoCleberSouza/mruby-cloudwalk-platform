@@ -93,7 +93,7 @@ class Platform::Network::Wifi
       :mode           => INVERTED_MODES[_mode],
       :rssi           => _rssi[0],
       :authentication => INVERTED_AUTHENTICATIONS["#{_type_1.downcase}#{_authentication_1.downcase}"],
-      :cipher         => INVERTED_CIPHERS["#{_groupcipher_1.downcase}"]
+      :cipher         => INVERTED_CIPHERS["#{_pairwiseciphers_1.downcase}"]
     }
   end
 end
