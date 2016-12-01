@@ -6,7 +6,7 @@ class Platform::Network::Wifi
     @media = :wifi
   end
 
-  AUTH_NONE_OPEN       = "1"
+  AUTH_NONE_OPEN       = ""
   AUTH_NONE_WEP        = "2"
   AUTH_NONE_WEP_SHARED = "3"
   AUTH_IEEE8021X       = "4"
