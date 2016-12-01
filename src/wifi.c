@@ -25,7 +25,12 @@ static mrb_value
 mrb_wifi_start(mrb_state *mrb, mrb_value klass)
 {
   mrb_int ret=0;
-  /* dummy function */
+
+  do {
+    ret = GEDI_WIFI_Enable ();
+    GEDI_CLOCK_Delay(500);
+  } while (ret!=0);
+
   return mrb_fixnum_value(ret);
 }
 
