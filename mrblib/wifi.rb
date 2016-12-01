@@ -43,13 +43,13 @@ class Platform::Network::Wifi
   INVERTED_AUTHENTICATIONS = AUTHENTICATIONS.invert
 
   CIPHERS = {
-    "none"   => PARE_CIPHERS_NONE,
-    "wep64"  => PARE_CIPHERS_WEP64,
-    "wep128" => PARE_CIPHERS_WEP128,
-    "wepx"   => PARE_CIPHERS_WEPX,
-    "ccmp"   => PARE_CIPHERS_CCMP,
-    "tkip"   => PARE_CIPHERS_TKIP,
-    "ccmptki"=> PARE_CIPHERS_CCMPTKIP
+    "none"     => PARE_CIPHERS_NONE,
+    "wep64"    => PARE_CIPHERS_WEP64,
+    "wep128"   => PARE_CIPHERS_WEP128,
+    "wepx"     => PARE_CIPHERS_WEPX,
+    "ccmp"     => PARE_CIPHERS_CCMP,
+    "tkip"     => PARE_CIPHERS_TKIP,
+    "ccmptkip" => PARE_CIPHERS_CCMPTKIP
   }
   INVERTED_CIPHERS = CIPHERS.invert
 
