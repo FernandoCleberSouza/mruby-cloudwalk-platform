@@ -6,30 +6,30 @@ class Platform::Network::Wifi
     @media = :wifi
   end
 
-  #NOT SUPPORTED
-  #AUTH_NONE_WEP        = "2"
-  #AUTH_NONE_WEP_SHARED = "3"
-  #AUTH_IEEE8021X       = "4"
-  #AUTH_WPA_WPA2_PSK    = "7"
-  #AUTH_WPA_WPA2_EAP    = "8"
   AUTH_NONE_OPEN       = ""
   AUTH_WPA_PSK         = "wpapsk"
   AUTH_WPA_EAP         = "wpaeap"
   AUTH_WPA2_PSK        = "wpa2psk"
   AUTH_WPA2_EAP        = "wpa2eap"
-
   #NOT SUPPORTED
-  #PARE_CIPHERS_WEP64  = 0x01.chr
-  #PARE_CIPHERS_WEP128 = 0x02.chr
-  #PARE_CIPHERS_WEPX   = 0x04.chr
+  AUTH_NONE_WEP        = "2"
+  AUTH_NONE_WEP_SHARED = "3"
+  AUTH_IEEE8021X       = "4"
+  AUTH_WPA_WPA2_PSK    = "7"
+  AUTH_WPA_WPA2_EAP    = "8"
+
   PARE_CIPHERS_NONE   = ""
   PARE_CIPHERS_CCMP   = "ccmp"
   PARE_CIPHERS_TKIP   = "tkip"
   PARE_CIPHERS_CCMPTKIP = "ccmptki"
-
   #NOT SUPPORTED
-  #MODE_IBSS    = "1"
+  PARE_CIPHERS_WEP64  = 0x01.chr
+  PARE_CIPHERS_WEP128 = 0x02.chr
+  PARE_CIPHERS_WEPX   = 0x04.chr
+
   MODE_STATION = "Managed"
+  #NOT SUPPORTED
+  MODE_IBSS    = "1"
 
   AUTHENTICATIONS = {
     "open"       => AUTH_NONE_OPEN,
