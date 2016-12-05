@@ -63,21 +63,21 @@ class Platform
     #
     # @return [Fixnum] Return number.
     def self.open
-      self._open
+      self._open if self.allow?
     end
 
     # @brief Restore the printer default settings and clear the print buffer data.
     #
     # @return [NilClass] Allways returns nil.
     def self.reset
-      self._reset
+      self._reset if self.allow?
     end
 
     # @brief Closes the printer.
     #
     # @return [NilClass] Allways returns nil.
     def self.close
-      self._close
+      self._close if self.allow?
     end
 
     # @brief Selects print font.
@@ -88,7 +88,7 @@ class Platform
     # @retval ERR_FONT_NOT_EXIST Font does not exist.
     # @retval ERR_INVALID_PARAM Invalid parameter.
     def self.font=(filename)
-      self._font = filename
+      self._font = filename if self.allow?
     end
 
     # @brief Sets printing gray level.
@@ -105,7 +105,7 @@ class Platform
     #
     # @return [NilClass] Allways returns nil.
     def self.level=(value)
-      self._level = value
+      self._level = value if self.allow?
     end
 
     # @brief Define size, in pixel, of printing
@@ -131,7 +131,9 @@ class Platform
       self.multi_width   = multicode_width
       self.multi_height  = multicode_height
 
-      self._size(singlecode_width, singlecode_height, multicode_width, multicode_height)
+      if self.allow?
+        self._size(singlecode_width, singlecode_height, multicode_width, multicode_height)
+      end
     end
 
     # @brief Feeds printing paper “pixel” pixels in print buffer.
@@ -149,7 +151,7 @@ class Platform
     #
     # @return [NilClass] Allways returns nil.
     def self.print(string)
-      self._print(string)
+      self._print(string) if self.allow?
     end
 
     # @brief Write text on print buffer.
@@ -158,7 +160,7 @@ class Platform
     #
     # @return [NilClass] Allways returns nil.
     def self.puts(string)
-      self.print(string)
+      self.print(string) if self.allow?
     end
 
     # @brief Print bmp file.
@@ -173,7 +175,7 @@ class Platform
     #
     # @return [NilClass] Allways returns nil.
     def self.print_bmp(path)
-      self._print_bmp(path)
+      self._print_bmp(path) if self.allow?
     end
 
     # @brief Check printer status, useful for paper check.
@@ -185,7 +187,7 @@ class Platform
     # @retval ERR_PRN_PAPEROUT Out of paper.
     # @retval ERR_PRN_OVERHEAT Printer overheating.
     def self.check
-      self._check
+      self._check if self.allow?
     end
   end
 end
