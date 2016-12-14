@@ -11,20 +11,19 @@
 #include "gedi.h"
 
 static mrb_value
-mrb_magnetic_s_read(mrb_state *mrb, mrb_value self)
+mrb_magnetic_s__read(mrb_state *mrb, mrb_value self)
 {
   mrb_int ret;
   mrb_value hash;
 
   BYTE abTk1[256], abTk2[256], abTk3[256];
   UINT uiLen1 = 0,uiLen2 = 0,uiLen3 = 0 ;
-  GEDI_e_Ret eRet;
 
   uiLen1 = sizeof(abTk1);
   uiLen2 = sizeof(abTk2);
   uiLen3 = sizeof(abTk3);
 
-  eRet = GEDI_MSR_Read(abTk1, &uiLen1, abTk2, &uiLen2, abTk3, &uiLen3);
+  ret = GEDI_MSR_Read(abTk1, &uiLen1, abTk2, &uiLen2, abTk3, &uiLen3);
 
   hash = mrb_hash_new(mrb);
   mrb_hash_set(mrb, hash, mrb_symbol_value(mrb_intern_cstr(mrb, "ret")), mrb_fixnum_value(ret));
@@ -47,6 +46,6 @@ mrb_magnetic_init(mrb_state* mrb)
   platform = mrb_class_get(mrb, "Platform");
   magnetic = mrb_define_class_under(mrb, platform, "Magnetic", mrb->object_class);
 
-  mrb_define_class_method(mrb , magnetic , "read" , mrb_magnetic_s_read , MRB_ARGS_NONE());
+  mrb_define_class_method(mrb , magnetic , "_read" , mrb_magnetic_s__read , MRB_ARGS_NONE());
 }
 
