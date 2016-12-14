@@ -27,7 +27,7 @@ set_display_columns(mrb_state *mrb, mrb_value self)
   memset(&display_space, 0, sizeof(display_space));
 
   screen          = mrb_const_get(mrb, mrb_obj_value(mrb->object_class), mrb_intern_lit(mrb, "STDOUT"));
-  display_columns = mrb_fixnum(mrb_funcall(mrb, screen, "x", 0));
+  display_columns = mrb_fixnum(mrb_funcall(mrb, screen, "max_x", 0));
 
   for (i = 0; i < display_columns; ++i ) strcat(display_space, " ");
 }
@@ -45,7 +45,7 @@ mrb_display_s_clear_line(mrb_state *mrb, mrb_value self)
   mrb_int line;
   mrb_get_args(mrb, "i", &line);
 
-  if (display_columns != 0) set_display_columns(mrb, self);
+  if (display_columns == 0) set_display_columns(mrb, self);
 
   GEDI_LCD_DrawString(0, line*font_height, font_width, font_height, display_space);
   return mrb_nil_value();
