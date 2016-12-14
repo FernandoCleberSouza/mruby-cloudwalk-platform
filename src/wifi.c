@@ -134,18 +134,13 @@ mrb_wifi_connect(mrb_state *mrb, mrb_value klass)
 /*1   -> In Progress*/
 /*< 0 -> Fail*/
 static mrb_value
-mrb_wifi_connected_m(mrb_state *mrb, mrb_value klass)
+mrb_wifi__connected_m(mrb_state *mrb, mrb_value klass)
 {
-  mrb_int ret = 0;
   GEDI_WIFI_e_Status eStatus;
 
   GEDI_WIFI_Status(&eStatus);
 
-  if(eStatus & GEDI_WIFI_STATUS_AP_CONNECTING) ret = 1;
-  else if(eStatus & GEDI_WIFI_STATUS_AP_CONNECTED) ret = 0;
-  else ret = -1;
-
-  return mrb_fixnum_value(ret);
+  return mrb_fixnum_value(eStatus);
 }
 
 static mrb_value
@@ -219,7 +214,7 @@ mrb_wifi_init(mrb_state *mrb)
   mrb_define_class_method(mrb , wifi , "start"      , mrb_wifi_start       , MRB_ARGS_NONE());
   mrb_define_class_method(mrb , wifi , "power"      , mrb_wifi_power       , MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb , wifi , "connect"    , mrb_wifi_connect     , MRB_ARGS_OPT(1));
-  mrb_define_class_method(mrb , wifi , "connected?" , mrb_wifi_connected_m , MRB_ARGS_NONE());
+  mrb_define_class_method(mrb , wifi , "_connected?" , mrb_wifi__connected_m , MRB_ARGS_NONE());
   mrb_define_class_method(mrb , wifi , "disconnect" , mrb_wifi_disconnect  , MRB_ARGS_NONE());
   mrb_define_class_method(mrb , wifi , "_scan"      , mrb_wifi__scan       , MRB_ARGS_NONE());
 }

@@ -1,5 +1,14 @@
 
 class Platform::Network::Wifi
+  GEDI_WIFI_STATUS_AP_CONNECTED     = 2
+  GEDI_WIFI_STATUS_SCANNING         = 8
+  GEDI_WIFI_STATUS_AP_CONNECTING    = 16
+  GEDI_WIFI_STATUS_CONNECTING       = 32
+  GEDI_WIFI_STATUS_SENDING          = 64
+  GEDI_WIFI_STATUS_RECEIVING        = 128
+  GEDI_WIFI_STATUS_DISCONNECTING    = 256
+  GEDI_WIFI_STATUS_AP_DISCONNECTING = 512
+
   class << self
     attr_accessor :rssi, :authentication, :password, :essid, :bssid, :channel, :mode, :cipher
     attr_reader :media
@@ -98,6 +107,15 @@ class Platform::Network::Wifi
       :authentication => INVERTED_AUTHENTICATIONS["#{_type_1.downcase}#{_authentication_1.downcase}"],
       :cipher         => INVERTED_CIPHERS["#{_pairwiseciphers_1.downcase}"]
     }
+  end
+
+  def self.connected?
+    connection = self._connected?
+    ret = -1
+    ret = 1 if (connection & GEDI_WIFI_STATUS_AP_CONNECTING) != 0
+    ret = 0 if (connection & GEDI_WIFI_STATUS_AP_CONNECTED) != 0
+    ContextLog.info "Connection [#{connection}] ret [#{ret}]"
+    ret
   end
 end
 
