@@ -8,6 +8,7 @@ class Platform::Magnetic
 
   def self.open
     self.tracks = {}
+    0 # SUCCESSFULLY OPEN
   end
 
   def self.close
