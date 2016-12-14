@@ -20,6 +20,8 @@ class Platform::Magnetic
     ret  = hash.delete(:ret)
     if ret == GEDI_MSR_STATUS_SUCCESS
       ret = SUCCESS
+      # For some reason separators come with the string, example: ;6799998900000060125=14122060123456789?:
+      hash[:track2] = hash[:track2].to_s[1..-3]
       self.tracks = hash
     end
     ret
