@@ -142,7 +142,7 @@ class Platform
     #
     # @return [NilClass] Allways returns nil.
     def self.feed(pixels = self.single_height)
-      self._feed(pixels) if self.allow?
+      self._feed(pixels || self.single_height) if self.allow?
     end
 
     # @brief Write text on print buffer.
