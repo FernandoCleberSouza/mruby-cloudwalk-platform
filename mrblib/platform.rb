@@ -59,6 +59,7 @@ class Platform
       CloudwalkHandshake.configure!
       self.setup_keyboard
       self.setup_status_bar
+      Platform::Printer.start
     rescue LoadError
     rescue NameError
     end
