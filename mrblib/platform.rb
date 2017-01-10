@@ -70,8 +70,8 @@ class Platform
   end
 
   def self.setup_keyboard
-    Device::IO.setup_keyboard(["qzQZ _,.", "abcABC", "defDEF", "ghiGHI", "jklJKL",
-                              "mnoMNO", "prsPRS", "tuvTUV", "wxyWXY", "spSP"])
+    Device::IO.setup_keyboard(["qzQZ", "abcABC", "defDEF", "ghiGHI", "jklJKL",
+                              "mnoMNO", "prsPRS", "tuvTUV", "wxyWXY", " .,_#@"])
   end
 
   def self.setup_status_bar
