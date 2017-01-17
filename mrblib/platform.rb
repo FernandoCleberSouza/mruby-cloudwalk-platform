@@ -47,6 +47,7 @@ class Platform
 
   def self.define_device_modules
     Device.const_set(:EMV, Platform::EMV)
+    Device.const_set(:Pinpad, Platform::EMV::Pinpad)
   end
 
   # Will be called at RunTime boot
