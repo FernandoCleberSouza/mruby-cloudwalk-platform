@@ -29,7 +29,7 @@ class Platform
   def self.screen_definition
     case System.model
     when "mp20"
-      [20, 10]
+      [21, 11]
     when "gpos400"
       [21, 20]
     else
