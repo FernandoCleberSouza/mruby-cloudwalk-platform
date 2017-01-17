@@ -24,12 +24,13 @@ GEDI_KBD_e_Key eKey_w;
 static mrb_value
 mrb_wifi_start(mrb_state *mrb, mrb_value klass)
 {
-  mrb_int ret=0;
+  mrb_int ret=0, attempts=0;
 
   do {
     ret = GEDI_WIFI_Enable ();
     GEDI_CLOCK_Delay(500);
-  } while (ret!=0);
+    attempts++;
+  } while (ret!=0 && attempts < 20);
 
   return mrb_fixnum_value(ret);
 }
@@ -38,14 +39,15 @@ mrb_wifi_start(mrb_state *mrb, mrb_value klass)
 static mrb_value
 mrb_wifi_power(mrb_state *mrb, mrb_value klass)
 {
-  mrb_int state, ret;
+  mrb_int state, ret, attempts = 0;
   mrb_get_args(mrb, "i", &state);
 
   if(state) {
     do {
+      attempts++;
       ret = GEDI_WIFI_Enable();
       GEDI_CLOCK_Delay(500);
-    } while (ret!=0);
+    } while (ret!=0 && attempts < 20);
   } else {
     ret = GEDI_WIFI_Disable();
   }
@@ -146,16 +148,16 @@ mrb_wifi__connected_m(mrb_state *mrb, mrb_value klass)
 static mrb_value
 mrb_wifi_disconnect(mrb_state *mrb, mrb_value klass)
 {
-  mrb_int ret = 0;
+  mrb_int ret = 0, attempts = 0;
   GEDI_WIFI_e_Status eStatus;
 
   GEDI_WIFI_APDisconnect();
 
-  do
-  {
+  do {
 	  GEDI_CLOCK_Delay(500);
 	  GEDI_WIFI_Status(&eStatus);
-  } while (!(eStatus & GEDI_WIFI_STATUS_AP_CONNECTED));
+    attempts++;
+  } while (ret = (eStatus & GEDI_WIFI_STATUS_AP_DISCONNECTING) && attempts < 20);
 
   return mrb_fixnum_value(ret);
 }
@@ -163,7 +165,7 @@ mrb_wifi_disconnect(mrb_state *mrb, mrb_value klass)
 static mrb_value
 mrb_wifi__scan(mrb_state *mrb, mrb_value klass)
 {
-  mrb_int i = 0;
+  mrb_int i = 0, attempts = 0;
   UINT uiListSize = 0;
   GEDI_WIFI_st_Info *aps;
   GEDI_WIFI_e_Status peStatusMask;
@@ -178,6 +180,7 @@ mrb_wifi__scan(mrb_state *mrb, mrb_value klass)
   GEDI_WIFI_Scan();
 
   do {
+    attempts++;
     GEDI_WIFI_Status(&peStatusMask);
     GEDI_CLOCK_Delay(500);
   } while (peStatusMask == GEDI_WIFI_STATUS_SCANNING);
