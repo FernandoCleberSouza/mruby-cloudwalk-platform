@@ -114,7 +114,6 @@ class Platform::Network::Wifi
     ret = -1
     ret = 1 if (connection & GEDI_WIFI_STATUS_AP_CONNECTING) != 0
     ret = 0 if (connection & GEDI_WIFI_STATUS_AP_CONNECTED) != 0
-    ContextLog.info "Connection [#{connection}] ret [#{ret}]"
     ret
   end
 end
