@@ -61,7 +61,7 @@ mrb_gprs_connect(mrb_state *mrb, mrb_value klass)
   sPass    = mrb_str_to_cstr(mrb, password);
 
   ret = GEDI_GSM_GPRS_Open(sAPN, sUser, sPass, 120000);
-  
+
   return mrb_fixnum_value(ret);
 }
 
@@ -86,7 +86,7 @@ mrb_gprs_disconnect(mrb_state *mrb, mrb_value klass)
   mrb_int ret=0;
 
   GEDI_GSM_GPRS_Close();
-  
+
   return mrb_true_value();
 }
 
