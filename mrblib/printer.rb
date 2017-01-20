@@ -12,10 +12,10 @@ class Platform
     ERR_DEV_BUSY          = -1005 # Device is busy.
     ERR_FONT_NOT_EXIST    = -1008 # Font does not exist.
 
-    DEFAULT_SINGLE_WIDTH  = 12
-    DEFAULT_SINGLE_HEIGHT = 24
-    DEFAULT_MULTI_WIDTH   = 24
-    DEFAULT_MULTI_HEIGHT  = 24
+    DEFAULT_SINGLE_WIDTH  = 8
+    DEFAULT_SINGLE_HEIGHT = 16
+    DEFAULT_MULTI_WIDTH   = 8
+    DEFAULT_MULTI_HEIGHT  = 16
 
     class << self
       attr_accessor :single_width, :single_height, :multi_width, :multi_height
@@ -126,13 +126,13 @@ class Platform
                    multicode_width=DEFAULT_MULTI_WIDTH,
                    multicode_height=DEFAULT_MULTI_HEIGHT)
 
-      self.single_width  = singlecode_width
-      self.single_height = singlecode_height
-      self.multi_width   = multicode_width
-      self.multi_height  = multicode_height
+      self.single_width  = singlecode_width || self.single_width
+      self.single_height = singlecode_height || self.single_height
+      self.multi_width   = multicode_width || self.multi_width
+      self.multi_height  = multicode_height || self.multi_height
 
       if self.allow?
-        self._size(singlecode_width, singlecode_height, multicode_width, multicode_height)
+        #self._size(singlecode_width, singlecode_height, multicode_width, multicode_height)
       end
     end
 
@@ -151,7 +151,13 @@ class Platform
     #
     # @return [NilClass] Allways returns nil.
     def self.print(string)
-      self._print(string) if self.allow?
+      if self.allow?
+        columns = self.single_height == 16 ? 40 : 24
+        string.to_s.chars.each_slice(columns).to_a.collect(&:join).each do |buf|
+          self._print(buf)
+        end
+        self.size
+      end
     end
 
     # @brief Write text on print buffer.
@@ -175,7 +181,12 @@ class Platform
     #
     # @return [NilClass] Allways returns nil.
     def self.print_bmp(path)
-      self._print_bmp(path) if self.allow?
+      if self.allow?
+        ContextLog.info "Before print bmp [#{path}]"
+        ret = self._print_bmp(path)
+        ContextLog.info "After #{ret}"
+        ret 
+      end
     end
 
     # @brief Check printer status, useful for paper check.
