@@ -104,8 +104,8 @@ mrb_platform_printer_s__print_bmp(mrb_state *mrb, mrb_value self)
   mrb_get_args(mrb, "S", &path);
 
   GEDI_e_Ret eRet;
-  GEDI_PRNTR_Init(400);
-  eRet = GEDI_PRNTR_DrawPictureFromFile(0, 0, (const CHAR *)RSTRING_PTR(path), 100);
+  GEDI_PRNTR_Init(160);
+  eRet = GEDI_PRNTR_DrawPictureFromFile(0, 0, (const CHAR *)RSTRING_PTR(path), 50);
   GEDI_PRNTR_Output();
   GEDI_CLOCK_Delay(1000);
 
