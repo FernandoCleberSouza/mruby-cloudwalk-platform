@@ -182,9 +182,7 @@ class Platform
     # @return [NilClass] Allways returns nil.
     def self.print_bmp(path)
       if self.allow?
-        ContextLog.info "Before print bmp [#{path}]"
         ret = self._print_bmp(path)
-        ContextLog.info "After #{ret}"
         ret 
       end
     end
