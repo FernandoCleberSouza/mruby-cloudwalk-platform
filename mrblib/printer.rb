@@ -152,7 +152,7 @@ class Platform
     # @return [NilClass] Allways returns nil.
     def self.print(string)
       if self.allow?
-        columns = self.single_height == 16 ? 40 : 24
+        columns = self.single_height == 16 ? 48 : 24
         string.to_s.chars.each_slice(columns).to_a.collect(&:join).each do |buf|
           self._print(buf)
         end
