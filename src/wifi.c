@@ -183,7 +183,7 @@ mrb_wifi__scan(mrb_state *mrb, mrb_value klass)
     attempts++;
     GEDI_WIFI_Status(&peStatusMask);
     GEDI_CLOCK_Delay(500);
-  } while (peStatusMask == GEDI_WIFI_STATUS_SCANNING);
+  } while (peStatusMask == GEDI_WIFI_STATUS_SCANNING && attempts < 20);
 
   GEDI_WIFI_APListGet(&aps, &uiListSize);
 
