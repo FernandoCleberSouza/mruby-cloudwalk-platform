@@ -13,7 +13,7 @@ static mrb_value
 mrb_platform_io_s__getc(mrb_state *mrb, mrb_value self)
 {
   mrb_int timeout=0;
-  GEDI_KBD_e_Key eKey;
+  GEDI_KBD_e_Key eKey=1;
 
   mrb_get_args(mrb, "i", &timeout);
 
