@@ -12,13 +12,15 @@
 static mrb_value
 mrb_platform_io_s__getc(mrb_state *mrb, mrb_value self)
 {
-  mrb_int timeout=0;
+  mrb_int timeout=0, ret=0;
   GEDI_KBD_e_Key eKey=1;
 
   mrb_get_args(mrb, "i", &timeout);
 
   if (!timeout) timeout = INFINITE;
-  GEDI_KBD_Get(&eKey, timeout, TRUE);
+  ret = GEDI_KBD_Get(&eKey, timeout, TRUE);
+
+  if (ret != 0) eKey = 1;
 
   return mrb_fixnum_value(eKey);
 }
