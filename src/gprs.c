@@ -11,6 +11,7 @@
 #include "mruby/variable.h"
 
 #include <gedi.h>
+#include <context_log.h>
 
 #if MRUBY_RELEASE_NO < 10000
   #include "error.h"
@@ -24,6 +25,8 @@ mrb_gprs_start(mrb_state *mrb, mrb_value klass)
 {
   mrb_int ret=0;
 
+  GEDI_WIFI_Disable();
+  GEDI_GSM_Disable();
   ret = GEDI_GSM_Enable(GEDI_GSM_SIM1, "", 120000);
 
   return mrb_fixnum_value(ret);

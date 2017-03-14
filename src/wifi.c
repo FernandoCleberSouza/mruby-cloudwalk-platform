@@ -26,6 +26,8 @@ mrb_wifi_start(mrb_state *mrb, mrb_value klass)
 {
   mrb_int ret=0, attempts=0;
 
+  GEDI_GSM_Disable();
+  GEDI_WIFI_Disable();
   do {
     ret = GEDI_WIFI_Enable ();
     GEDI_CLOCK_Delay(500);
@@ -148,7 +150,7 @@ mrb_wifi__connected_m(mrb_state *mrb, mrb_value klass)
 static mrb_value
 mrb_wifi_disconnect(mrb_state *mrb, mrb_value klass)
 {
-  mrb_int ret = 0, attempts = 0;
+  mrb_int ret = 0, attempts = 0, ret2 = 0;
   GEDI_WIFI_e_Status eStatus;
 
   GEDI_WIFI_APDisconnect();
@@ -158,6 +160,8 @@ mrb_wifi_disconnect(mrb_state *mrb, mrb_value klass)
 	  GEDI_WIFI_Status(&eStatus);
     attempts++;
   } while (ret = (eStatus & GEDI_WIFI_STATUS_AP_DISCONNECTING) && attempts < 20);
+
+  GEDI_WIFI_Disable();
 
   return mrb_fixnum_value(ret);
 }
