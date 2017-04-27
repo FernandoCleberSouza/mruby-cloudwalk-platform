@@ -31,9 +31,9 @@ class Platform
     when "mp20"
       [22, 11]
     when "gpos400"
-      [21, 20]
+      [22, 22]
     else
-      [20, 10]
+      [22, 11]
     end
   end
 
