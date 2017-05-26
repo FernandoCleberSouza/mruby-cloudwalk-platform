@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "mruby.h"
 #include "mruby/compile.h"
 #include "mruby/value.h"
@@ -74,11 +75,11 @@ mrb_pinpad_s_dukpt_encrypt_buffer(mrb_state *mrb, mrb_value klass)
   pstData.eKeyType    = 3;
   pstData.uiKeyIndex  = slot;
   pstData.eMode       = 24; // GEDI_KMS_ENCMODE_ECB_3DUKPT_P3
-  pstData.abInput     = RSTRING_PTR(message);
+  pstData.abInput     = (BYTE *)RSTRING_PTR(message);
   pstData.uiInputLen  = 8;
-  pstData.abOutput    = &output;
+  pstData.abOutput    = (BYTE *)&output;
   pstData.uiOutputLen = 8;
-  pstData.abKSN       = &abKSN;
+  pstData.abKSN       = (BYTE *)&abKSN;
 
   ret = GEDI_KMS_EncryptData (&pstData);
   /*DUKPT*/
@@ -87,8 +88,8 @@ mrb_pinpad_s_dukpt_encrypt_buffer(mrb_state *mrb, mrb_value klass)
   array  = mrb_ary_new(mrb);
   mrb_ary_push(mrb, array, mrb_fixnum_value(ret));
   if (ret == GEDI_RET_OK) {
-    mrb_ary_push(mrb, array, mrb_str_new(mrb, output, 8));
-    mrb_ary_push(mrb, array, mrb_str_new(mrb, abKSN, 10));
+    mrb_ary_push(mrb, array, mrb_str_new(mrb, (char *)&output, 8));
+    mrb_ary_push(mrb, array, mrb_str_new(mrb, (char *)&abKSN, 10));
   }
 
   return array;
