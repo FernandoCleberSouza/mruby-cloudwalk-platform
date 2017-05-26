@@ -6,6 +6,7 @@
 #include "mruby/array.h"
 #include "mruby/string.h"
 #include "mruby/hash.h"
+#include "gedi.h"
 
 unsigned int crc_table[256];
 
@@ -55,6 +56,44 @@ mrb_s_crc16(mrb_state *mrb, mrb_value klass)
   return mrb_fixnum_value((uint16_t)accumulator);
 }
 
+static mrb_value
+mrb_pinpad_s_dukpt_encrypt_buffer(mrb_state *mrb, mrb_value klass)
+{
+  mrb_int ret, slot=0;
+  unsigned char output[1024]={0x00};
+  unsigned char abKSN[1024]={0x00};
+  mrb_value message, array;
+  GEDI_KMS_st_Data pstData;
+
+  memset(&pstData, 0, sizeof(pstData));
+
+  mrb_get_args(mrb, "iS", &slot, &message);
+
+  pstData.bVersion    = 0;
+  pstData.eOperation  = 0;
+  pstData.eKeyType    = 3;
+  pstData.uiKeyIndex  = slot;
+  pstData.eMode       = 24; // GEDI_KMS_ENCMODE_ECB_3DUKPT_P3
+  pstData.abInput     = RSTRING_PTR(message);
+  pstData.uiInputLen  = 8;
+  pstData.abOutput    = &output;
+  pstData.uiOutputLen = 8;
+  pstData.abKSN       = &abKSN;
+
+  ret = GEDI_KMS_EncryptData (&pstData);
+  /*DUKPT*/
+  /*ContextLog(mrb, 0, "RET [%d][%s]", ret, abKSN);*/
+
+  array  = mrb_ary_new(mrb);
+  mrb_ary_push(mrb, array, mrb_fixnum_value(ret));
+  if (ret == GEDI_RET_OK) {
+    mrb_ary_push(mrb, array, mrb_str_new(mrb, output, 8));
+    mrb_ary_push(mrb, array, mrb_str_new(mrb, abKSN, 10));
+  }
+
+  return array;
+}
+
 void
 mrb_crypto_init(mrb_state* mrb)
 {
@@ -66,4 +105,5 @@ mrb_crypto_init(mrb_state* mrb)
   crypto   = mrb_define_class_under(mrb, platform, "Crypto", mrb->object_class);
 
   mrb_define_class_method(mrb , crypto , "crc16" , mrb_s_crc16 , MRB_ARGS_REQ(1));
+  mrb_define_class_method(mrb , crypto , "dukpt_encrypt_buffer" , mrb_pinpad_s_dukpt_encrypt_buffer , MRB_ARGS_REQ(2));
 }
