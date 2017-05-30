@@ -58,7 +58,7 @@ mrb_s_crc16(mrb_state *mrb, mrb_value klass)
 }
 
 static mrb_value
-mrb_pinpad_s_dukpt_encrypt_buffer(mrb_state *mrb, mrb_value klass)
+mrb_pinpad_s__dukpt_encrypt_buffer(mrb_state *mrb, mrb_value klass)
 {
   mrb_int ret, slot=0;
   unsigned char output[1024]={0x00};
@@ -106,5 +106,5 @@ mrb_crypto_init(mrb_state* mrb)
   crypto   = mrb_define_class_under(mrb, platform, "Crypto", mrb->object_class);
 
   mrb_define_class_method(mrb , crypto , "crc16" , mrb_s_crc16 , MRB_ARGS_REQ(1));
-  mrb_define_class_method(mrb , crypto , "dukpt_encrypt_buffer" , mrb_pinpad_s_dukpt_encrypt_buffer , MRB_ARGS_REQ(2));
+  mrb_define_class_method(mrb , crypto , "_dukpt_encrypt_buffer" , mrb_pinpad_s__dukpt_encrypt_buffer , MRB_ARGS_REQ(2));
 }
