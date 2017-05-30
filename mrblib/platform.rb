@@ -60,6 +60,7 @@ class Platform
       CloudwalkHandshake.configure!
       self.setup_keyboard
       self.setup_status_bar
+      self.setup_crypto
       Platform::Printer.start
     rescue LoadError
     rescue NameError
@@ -78,5 +79,12 @@ class Platform
   def self.setup_status_bar
     Platform::System.status_bar(*icons_status_bar)
     DaFunk::Helper::StatusBar.managment = false if DaFunk::Helper::StatusBar.respond_to?(:managment=)
+  end
+
+  def self.setup_crypto
+    # TODO Reafactor, send it to DaFunk, maybe.
+    Device::Crypto.define_singleton_method :dukpt_encrypt_buffer do |a,b|
+      Platform::Crypto.dukpt_encrypt_buffer(a,b)
+    end
   end
 end
