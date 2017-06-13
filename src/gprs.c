@@ -2,6 +2,8 @@
 #include "mruby.h"
 #include <stddef.h>
 #include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 #include "mruby/array.h"
 #include "mruby/class.h"
@@ -52,7 +54,7 @@ mrb_gprs_connect(mrb_state *mrb, mrb_value klass)
 {
   mrb_value apn, user, password;
   const char *sAPN, *sUser, *sPass;
-  int keep_alive=300000, timeout=0, ret=0;
+  int timeout=120000, ret=0;
 
   apn   = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@apn"));
   sAPN  = mrb_str_to_cstr(mrb, apn);
@@ -63,7 +65,7 @@ mrb_gprs_connect(mrb_state *mrb, mrb_value klass)
   password = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@password"));
   sPass    = mrb_str_to_cstr(mrb, password);
 
-  ret = GEDI_GSM_GPRS_Open(sAPN, sUser, sPass, 120000);
+  ret = GEDI_GSM_GPRS_Open(sAPN, sUser, sPass, timeout);
 
   return mrb_fixnum_value(ret);
 }
@@ -75,7 +77,6 @@ mrb_gprs_connect(mrb_state *mrb, mrb_value klass)
 static mrb_value
 mrb_gprs_connected_m(mrb_state *mrb, mrb_value klass)
 {
-  mrb_int ret=0;
   GEDI_GSM_e_NetStatus eStatus;
 
   GEDI_GSM_GPRS_Status(&eStatus);
@@ -86,21 +87,31 @@ mrb_gprs_connected_m(mrb_state *mrb, mrb_value klass)
 static mrb_value
 mrb_gprs_disconnect(mrb_state *mrb, mrb_value klass)
 {
-  mrb_int ret=0;
-
   GEDI_GSM_GPRS_Close();
-
   return mrb_true_value();
 }
 
-/*Must to return the signal value between 1 and 5*/
 static mrb_value
-mrb_gprs_signal(mrb_state *mrb, mrb_value klass)
+mrb_gprs_info(mrb_state *mrb, mrb_value klass)
 {
-  /*TODO Implement*/
-  /*mrb_int signal = OsWlGetSignal();*/
-  mrb_int signal = 0;
-  return mrb_fixnum_value(signal);
+  mrb_int ret = 0, iInfo = 0;
+  unsigned int puiLen = 2048;
+  char szConfig[2048];
+  mrb_value array;
+
+  memset(szConfig, 0, sizeof(szConfig));
+
+  mrb_get_args(mrb, "i", &iInfo);
+
+  ret = GEDI_GSM_InfoGet(iInfo, (char *)&szConfig, &puiLen);
+
+  array = mrb_ary_new(mrb);
+  mrb_ary_push(mrb, array, mrb_fixnum_value(ret));
+  if (ret == GEDI_RET_OK) {
+    mrb_ary_push(mrb, array, mrb_str_new(mrb, (char *)&szConfig, puiLen));
+  }
+
+  return array;
 }
 
 void
@@ -117,6 +128,6 @@ mrb_gprs_init(mrb_state* mrb)
   mrb_define_class_method(mrb, gprs, "_connect", mrb_gprs_connect, MRB_ARGS_OPT(1));
   mrb_define_class_method(mrb, gprs, "_connected?", mrb_gprs_connected_m, MRB_ARGS_NONE());
   mrb_define_class_method(mrb, gprs, "disconnect", mrb_gprs_disconnect, MRB_ARGS_NONE());
-  mrb_define_class_method(mrb, gprs, "signal", mrb_gprs_signal, MRB_ARGS_NONE());
+  mrb_define_class_method(mrb, gprs, "info", mrb_gprs_info, MRB_ARGS_REQ(1));
 }
 
