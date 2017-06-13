@@ -46,8 +46,11 @@ class Platform
   end
 
   def self.define_device_modules
-    Device.const_set(:EMV, Platform::EMV)
-    Device.const_set(:Pinpad, Platform::EMV::Pinpad)
+    Device.const_set(:EMV               , Platform::EMV)
+    Device.const_set(:Pinpad            , Platform::EMV::Pinpad)
+    Device::Network.const_set(:Gprs     , Platform::Network::Gprs)
+    Device::Network.const_set(:Ethernet , Platform::Network::Ethernet)
+    Device::Network.const_set(:Wifi     , Platform::Network::Wifi)
   end
 
   # Will be called at RunTime boot
