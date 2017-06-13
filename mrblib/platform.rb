@@ -53,18 +53,14 @@ class Platform
   # Will be called at RunTime boot
   def self.setup
     Screen.setup(*screen_definition)
-    begin
-      self.define_device_modules
-      require 'posxml_parser'
-      require 'cloudwalk_handshake'
-      CloudwalkHandshake.configure!
-      self.setup_keyboard
-      self.setup_status_bar
-      self.setup_crypto
-      Platform::Printer.start
-    rescue LoadError
-    rescue NameError
-    end
+    self.define_device_modules
+    require 'posxml_parser'
+    require 'cloudwalk_handshake'
+    CloudwalkHandshake.configure!
+    self.setup_keyboard
+    self.setup_status_bar
+    self.setup_crypto
+    Platform::Printer.start
   end
 
   def self.version
