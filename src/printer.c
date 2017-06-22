@@ -40,9 +40,9 @@ mrb_platform_printer_s__font(mrb_state *mrb, mrb_value self)
   mrb_value filename;
   mrb_int ret;
 
-  mrb_get_args(mrb, "z", &filename);
+  mrb_get_args(mrb, "S", &filename);
 
-  ret = GEDI_PRNTR_FontSet((const CHAR *)filename.value.p);
+  ret = GEDI_PRNTR_FontSet(RSTRING_PTR(filename));
 
   return mrb_fixnum_value(ret);
 }
