@@ -31,6 +31,14 @@ mrb_system_s__set_backlight(mrb_state *mrb, mrb_value self)
 
   GEDI_LCD_ContrastSet(mode);
 
+  GEDI_LED_Set(GEDI_LED_ID_BACKLIGHT_KEYBOARD , 0);
+
+  if (mode == 0) {
+    GEDI_LED_Set(GEDI_LED_ID_BACKLIGHT_DISPLAY  , 0);
+  } else {
+    GEDI_LED_Set(GEDI_LED_ID_BACKLIGHT_DISPLAY  , 1);
+  }
+
   return mrb_fixnum_value(mode);
 }
 
