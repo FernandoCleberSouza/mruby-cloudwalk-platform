@@ -182,8 +182,7 @@ class Platform
     # @return [NilClass] Allways returns nil.
     def self.print_bmp(path)
       if self.allow?
-        ret = self._print_bmp(path)
-        ret 
+        self._print_bmp(path)
       end
     end
 
