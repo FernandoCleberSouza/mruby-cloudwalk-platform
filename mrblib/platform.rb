@@ -71,6 +71,15 @@ class Platform
   end
 
   def self.setup_keyboard
+    menu_options = {
+      :back_key          => Device::IO::F1,
+      :back_key_label    => "    ",
+      :forward_key       => Device::IO::ALPHA,
+      :forward_key_label => "    "
+    }
+
+    menu_options[:forward_key] = Device::IO::F2 if System.model == "mp20"
+
     Device::IO.setup_keyboard(["qzQZ", "abcABC", "defDEF", "ghiGHI", "jklJKL",
                               "mnoMNO", "prsPRS", "tuvTUV", "wxyWXY", " .,_#@+!?"],
                              menu_options)
