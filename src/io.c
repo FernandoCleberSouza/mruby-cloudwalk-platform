@@ -19,7 +19,6 @@ mrb_platform_io_s__getc(mrb_state *mrb, mrb_value self)
 
   if (!timeout) timeout = INFINITE;
   ret = GEDI_KBD_Get(&eKey, timeout, FALSE);
-  GEDI_KBD_Get(&eKeyClear, 1, TRUE);
 
   if (ret != 0) eKey = 1;
 
