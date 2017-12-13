@@ -78,6 +78,10 @@ module Kernel
     convert_key(key)
   end
 
+  def getxy(timeout_io = 10_000)
+    Platform::Touch.getxy(timeout_io)
+  end
+
   private
   def convert_key(value)
     PLATFORM_KEYS[value] || 0x1B.chr
