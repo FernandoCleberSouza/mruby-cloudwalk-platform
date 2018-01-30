@@ -23,12 +23,16 @@ class Platform::Network
   end
 
   def self.init(media, options)
+    self.configure(media, options)
+    @interface.init(options)
+  end
+
+  def self.configure
     if media == MEDIA_GPRS
       @interface = Network::Gprs
     else
       @interface = Network::Wifi
     end
-    @interface.init(options)
   end
 
   def self.sim_id
