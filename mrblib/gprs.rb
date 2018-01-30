@@ -59,9 +59,9 @@ class Platform::Network::Gprs
   end
 
   def self.signal
-    ret, value = self.info(GEDI_GSM_INFO_SIGNAL) * 3.228
+    ret, value = self.info(GEDI_GSM_INFO_SIGNAL)
     if ret == 0 && !value.to_s.empty?
-      value.to_i * 3.228
+      (value.to_i * 3.228).to_i
     else
       0
     end
