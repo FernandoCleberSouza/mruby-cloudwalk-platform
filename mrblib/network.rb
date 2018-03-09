@@ -27,7 +27,7 @@ class Platform::Network
     @interface.init(options)
   end
 
-  def self.configure
+  def self.configure(media, options)
     if media == MEDIA_GPRS
       @interface = Network::Gprs
     else
